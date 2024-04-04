@@ -3,7 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
-import connectDB from "./db/connect";
+// import connectDB from "./db/connect";
+import { router } from "routes/router";
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // put routes
+app.use("/api/", router);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Server Of Cuddly");
@@ -36,7 +38,7 @@ app.use(ErrorMiddleware);
 
 const startServer = async () => {
   try {
-    await connectDB();
+    // await connectDB();
 
     const port = String(process.env.SERVER_PORT) || 5000;
     app.listen(port, () => {

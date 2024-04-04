@@ -17,7 +17,8 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const ErrorMiddleware_1 = __importDefault(require("./errorhandlers/ErrorMiddleware"));
-const connect_1 = __importDefault(require("./db/connect"));
+// import connectDB from "./db/connect";
+const router_1 = require("routes/router");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 // use CORS
@@ -34,6 +35,7 @@ app.use(express_1.default.json());
 // parse cookie
 app.use((0, cookie_parser_1.default)());
 // put routes
+app.use("/api/", router_1.router);
 app.get("/", (req, res) => {
     res.send("Server Of Cuddly");
 });
@@ -41,7 +43,7 @@ app.get("/", (req, res) => {
 app.use(ErrorMiddleware_1.default);
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield (0, connect_1.default)();
+        // await connectDB();
         const port = String(process.env.SERVER_PORT) || 5000;
         app.listen(port, () => {
             console.log(`Cuddly-server is listening on port ${port} ...`);
@@ -52,3 +54,4 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 startServer();
+//# sourceMappingURL=server.js.map

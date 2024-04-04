@@ -11,3 +11,4 @@ function ErrorMiddleware(err, req, res, next) {
     });
 }
 exports.default = ErrorMiddleware;
+//# sourceMappingURL=ErrorMiddleware.js.map

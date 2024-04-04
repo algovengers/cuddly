@@ -10,3 +10,4 @@ function connectDB() {
     return mongoose_1.default.connect(String(process.env.MONGO_URI));
 }
 exports.default = connectDB;
+//# sourceMappingURL=connect.js.map
