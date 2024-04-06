@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
 // import connectDB from "./db/connect";
-import { router } from "routes/router";
+import { router } from "./routes/router";
 
 dotenv.config();
 
