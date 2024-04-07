@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,9 +12,54 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import axios from "axios";
 
 function LoginPage() {
+  const [curstate, setCurstate] = useState<string>("idle");
+  const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
+
+  async function handleForm(e: React.SyntheticEvent) {
+    e.preventDefault();
+
+    const formData: {
+      username: string;
+      emailId: string;
+      password: string;
+    } = {
+      username: (e.target as HTMLFormElement).username.value,
+      emailId: (e.target as HTMLFormElement).email.value,
+      password: (e.target as HTMLFormElement).password.value,
+    };
+
+    if (
+      formData?.username?.trim()?.toString() != "" &&
+      formData?.emailId?.trim()?.toString() != "" &&
+      formData?.password != ""
+    ) {
+      try {
+        setCurstate("busy");
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_PATH}/api/signup`,
+          formData
+        );
+
+        // Reset the form
+        (e.target as HTMLFormElement).reset();
+
+        setErrormsg("");
+        setCurstate("idle");
+
+        // Redirect to .. page
+        navigate("/discover");
+      } catch (error: any) {
+        console.error("Error login:", error);
+        setErrormsg(error?.response?.data?.message);
+        setCurstate("idle");
+      }
+    }
+  }
 
   return (
     <div className="min-h-[100vh] flex flex-col justify-center bg-[#ffebc4] bg-[linear-gradient(180deg,#ffebc4,#fd9)]">
@@ -30,15 +74,18 @@ function LoginPage() {
           <div className="space-y-4">
             <Button className="w-full text-md flex gap-2" variant="outline">
               <FaGoogle className="text-xl" />
-              <span>Sign up with Google</span>
+              <span>Sign in with Google</span>
             </Button>
             <Separator className="my-4" />
-            <form className="space-y-4">
+            <div className="mt-4 text-center text-md text-red-900">
+              {errormsg}
+            </div>
+            <form onSubmit={handleForm} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  name="name"
+                  name="username"
                   placeholder="John Doe"
                   type="text"
                 />
@@ -65,20 +112,29 @@ function LoginPage() {
                   placeholder="********"
                 />
               </div>
+              <Button
+                className="w-full text-md"
+                type="submit"
+                disabled={curstate === "busy" ? true : false}
+              >
+                {curstate === "busy" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Signing up
+                  </>
+                ) : (
+                  "Signup"
+                )}
+              </Button>
             </form>
+            <div className="mt-4 text-center text-md">
+              Already have an account?{" "}
+              <button className="underline" onClick={() => navigate("/login")}>
+                Login
+              </button>
+            </div>
           </div>
         </CardContent>
-        <CardFooter className="flex-col">
-          <Button className="w-full text-md" type="submit">
-            Signup
-          </Button>
-          <div className="mt-4 text-center text-md">
-            Already have an account?{" "}
-            <button className="underline" onClick={() => navigate("/login")}>
-              Login
-            </button>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );

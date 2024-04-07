@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -13,9 +12,51 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 function LoginPage() {
+  const [curstate, setCurstate] = useState<string>("idle");
+  const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
+
+  async function handleForm(e: React.SyntheticEvent) {
+    e.preventDefault();
+
+    const formData: {
+      emailId: string;
+      password: string;
+    } = {
+      emailId: (e.target as HTMLFormElement).email.value,
+      password: (e.target as HTMLFormElement).password.value,
+    };
+
+    if (
+      formData?.emailId?.trim()?.toString() != "" &&
+      formData?.password != ""
+    ) {
+      try {
+        setCurstate("busy");
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_PATH}/api/login`,
+          formData
+        );
+
+        // Reset the form
+        (e.target as HTMLFormElement).reset();
+
+        setErrormsg("");
+        setCurstate("idle");
+
+        // Redirect to .. page
+        navigate("/discover");
+      } catch (error: any) {
+        console.error("Error login:", error);
+        setErrormsg(error?.response?.data?.message);
+        setCurstate("idle");
+      }
+    }
+  }
 
   return (
     <div className="min-h-[100vh] flex flex-col justify-center bg-[#ffebc4] bg-[linear-gradient(180deg,#ffebc4,#fd9)]">
@@ -33,7 +74,10 @@ function LoginPage() {
               <span>Sign in with Google</span>
             </Button>
             <Separator className="my-4" />
-            <form className="space-y-4">
+            <div className="mt-4 text-center text-md text-red-900">
+              {errormsg}
+            </div>
+            <form onSubmit={handleForm} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -53,20 +97,29 @@ function LoginPage() {
                 </div>
                 <Input id="password" type="password" placeholder="********" />
               </div>
+              <Button
+                className="w-full text-md"
+                type="submit"
+                disabled={curstate === "busy" ? true : false}
+              >
+                {curstate === "busy" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Logging in
+                  </>
+                ) : (
+                  "Login"
+                )}
+              </Button>
             </form>
+            <div className="mt-4 text-center text-md">
+              Don't have an account?{" "}
+              <button className="underline" onClick={() => navigate("/signup")}>
+                Sign up
+              </button>
+            </div>
           </div>
         </CardContent>
-        <CardFooter className="flex-col">
-          <Button className="w-full text-md" type="submit">
-            Login
-          </Button>
-          <div className="mt-4 text-center text-md">
-            Don't have an account?{" "}
-            <button className="underline" onClick={() => navigate("/signup")}>
-              Sign up
-            </button>
-          </div>
-        </CardFooter>
       </Card>
     </div>
   );
