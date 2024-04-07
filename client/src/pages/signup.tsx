@@ -14,9 +14,11 @@ import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
+import googleAuth from "@/utils/googleAuth";
 
-function LoginPage() {
+function SignupPage() {
   const [curstate, setCurstate] = useState<string>("idle");
+  const [googleCurstate, setGoogleCurstate] = useState<string>("idle");
   const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
 
@@ -61,6 +63,18 @@ function LoginPage() {
     }
   }
 
+  async function handleGoogleAuth() {
+    setGoogleCurstate("busy");
+    if (await googleAuth()) {
+      setGoogleCurstate("idle");
+      // Redirect to .. page
+      // navigate("/discover");
+    } else {
+      setErrormsg("Error in Signing with Google");
+      setGoogleCurstate("idle");
+    }
+  }
+
   return (
     <div className="min-h-[100vh] flex flex-col justify-center bg-[#ffebc4] bg-[linear-gradient(180deg,#ffebc4,#fd9)]">
       <Card className=" sm:w-[400px] sm:mx-auto mx-3 my-3 shadow-2xl border-[#00000055]">
@@ -72,7 +86,12 @@ function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Button className="w-full text-md flex gap-2" variant="outline">
+            <Button
+              className="w-full text-md flex gap-2"
+              variant="outline"
+              onClick={handleGoogleAuth}
+              disabled={googleCurstate === "busy" ? true : false}
+            >
               <FaGoogle className="text-xl" />
               <span>Sign in with Google</span>
             </Button>
@@ -140,4 +159,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default SignupPage;
