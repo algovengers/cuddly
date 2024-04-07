@@ -1,0 +1,41 @@
+.leftColumn{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    
+}
+.unselected{
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: black;
+}
+.selected{
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    background-color: black;
+    border: 2px solid white ;
+}
+.wrapper{
+    width: 14px;
+    height: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.circle{
+
+}
+.circle::after{
+    content: '';
+    display: block;
+    height: 58px;
+    width: 1.5px;
+    margin-top: 10.1px;
+    margin-left: auto;
+    margin-right: auto;
+    background: black;
+}

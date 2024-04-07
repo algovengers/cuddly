@@ -13,4 +13,4 @@ router.route("/login").post(loginUser);
 router.route("/logout").post(logoutUser);
 router.route("/signinwithgoogle").post(googleSingup);
 
-export { router };
+export default router;
