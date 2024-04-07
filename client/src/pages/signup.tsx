@@ -68,7 +68,7 @@ function SignupPage() {
     if (await googleAuth()) {
       setGoogleCurstate("idle");
       // Redirect to .. page
-      // navigate("/discover");
+      navigate("/discover");
     } else {
       setErrormsg("Error in Signing with Google");
       setGoogleCurstate("idle");
