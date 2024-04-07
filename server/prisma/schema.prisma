@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("MONGO_URI")
+}
+
+model User {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  emailId      String  @unique
+  password     String?
+  refreshToken String?
+  photo        String?
+  Pet          Pet[]
+}
+
+model Pet {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  owner       User   @relation(fields: [userId], references: [id])
+  userId      String @db.ObjectId
+  color       String
+  type      Animal
+  gender      String
+  breed       String // Should be limited
+  personality String // This should be enum ideally I guess
+  city        String
+  weight      String // This should be enum again and there should be range in my opinion
+  age         Int
+  Image       String
+}
+
+enum Animal {
+  cat
+  dog
+}
