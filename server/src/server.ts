@@ -4,9 +4,10 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
 // import connectDB from "./db/connect";
-import router  from "./routes/router";
+import router from "./routes/router";
 import authRouter from "./routes/authRouter";
 import { authenticateUser } from "./middleware/auth";
+import { chatWithAi } from "./controllers/chat.controller";
 
 dotenv.config();
 
@@ -32,13 +33,15 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server Of Cuddly");
 });
 
+app.post("/chat", chatWithAi);
+
 // put routes
 app.use("/api", router);
 
 //use authenticated middleware
-app.use(authenticateUser)
+app.use(authenticateUser);
 
-app.use("/api",authRouter)
+app.use("/api", authRouter);
 
 // ERROR middleware (must be in last)
 app.use(ErrorMiddleware);

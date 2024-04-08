@@ -29,7 +29,7 @@ model Pet {
   owner       User   @relation(fields: [userId], references: [id])
   userId      String @db.ObjectId
   color       String
-  type      Animal
+  type        Animal
   gender      String
   breed       String // Should be limited
   personality String // This should be enum ideally I guess
@@ -42,4 +42,30 @@ model Pet {
 enum Animal {
   cat
   dog
+}
+
+// Define the ChatHistory model
+model ChatHistory {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  sessionId String    @unique
+  messages  Message[]
+}
+
+// Define the Message model
+model Message {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  type          String
+  data          MessageData @relation(fields: [dataId], references: [id])
+  dataId        String      @db.ObjectId
+  chatHistory   ChatHistory @relation(fields: [chatHistoryId], references: [id])
+  chatHistoryId String      @db.ObjectId
+}
+
+// Define the MessageData model
+model MessageData {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  content           String
+  additional_kwargs Json?
+  response_metadata Json?
+  Message           Message[]
 }
