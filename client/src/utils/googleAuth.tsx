@@ -32,12 +32,12 @@ async function googleAuth() {
       credential,
     };
     console.log(formData);
-    await axios.post(
+    const { data: userData }: any = await axios.post(
       `${import.meta.env.VITE_BACKEND_PATH}/api/signinwithgoogle`,
       formData
     );
 
-    return true;
+    return userData;
   } catch (error: any) {
     console.log(error.message);
     return false;

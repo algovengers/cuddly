@@ -15,12 +15,15 @@ import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import axios from "axios";
 import googleAuth from "@/utils/googleAuth";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user";
 
 function SignupPage() {
   const [curstate, setCurstate] = useState<string>("idle");
   const [googleCurstate, setGoogleCurstate] = useState<string>("idle");
   const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function handleForm(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -54,7 +57,7 @@ function SignupPage() {
         setCurstate("idle");
 
         // Redirect to .. page
-        navigate("/discover");
+        navigate("/login");
       } catch (error: any) {
         console.error("Error login:", error);
         setErrormsg(error?.response?.data?.message);
@@ -65,10 +68,18 @@ function SignupPage() {
 
   async function handleGoogleAuth() {
     setGoogleCurstate("busy");
-    if (await googleAuth()) {
+
+    const { data }: any = await googleAuth();
+    if (data) {
       setGoogleCurstate("idle");
-      // Redirect to .. page
-      navigate("/discover");
+
+      // set context
+      if (data?.user?.emailId && data?.user?.name) {
+        dispatch(setUser({ name: data.user.name, email: data.user.emailId }));
+
+        // Redirect to .. page
+        navigate("/discover");
+      }
     } else {
       setErrormsg("Error in Signing with Google");
       setGoogleCurstate("idle");
