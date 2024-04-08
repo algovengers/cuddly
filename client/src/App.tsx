@@ -1,9 +1,9 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
 import Discover from "./pages/discover";
 import Upload from "./pages/upload";
+import ChatWithAi from "./pages/ChatWithAi";
 
 const router = createBrowserRouter([
   {
@@ -16,17 +16,20 @@ const router = createBrowserRouter([
   },
   {
     path: "/explore",
-    element : <Discover />
+    element: <Discover />,
   },
   {
-    path : '/upload',
-    element : <Upload />
-  }
+    path: "/upload",
+    element: <Upload />,
+  },
+  {
+    path: "/chatwithai",
+    element: <ChatWithAi />,
+  },
 ]);
 
 function App() {
   return <RouterProvider router={router} />;
-
 }
 
 export default App;

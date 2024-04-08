@@ -4,6 +4,7 @@ import {
   logoutUser,
   registerUser,
 } from "../controllers/user.controller";
+import { chatWithAi } from "controllers/chat.controller";
 import { Router } from "express";
 
 const router = Router();
