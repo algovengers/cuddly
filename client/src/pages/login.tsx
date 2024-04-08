@@ -15,12 +15,15 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import googleAuth from "@/utils/googleAuth";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user";
 
 function LoginPage() {
   const [curstate, setCurstate] = useState<string>("idle");
   const [googleCurstate, setGoogleCurstate] = useState<string>("idle");
   const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   async function handleForm(e: React.SyntheticEvent) {
     e.preventDefault();
@@ -39,19 +42,24 @@ function LoginPage() {
     ) {
       try {
         setCurstate("busy");
-        await axios.post(
+        const { data }: any = await axios.post(
           `${import.meta.env.VITE_BACKEND_PATH}/api/login`,
           formData
         );
 
-        // Reset the form
-        (e.target as HTMLFormElement).reset();
+        // set context
+        if (data?.emailId && data?.name) {
+          dispatch(setUser({ name: data.name, email: data.emailId }));
 
-        setErrormsg("");
-        setCurstate("idle");
+          // Reset the form
+          (e.target as HTMLFormElement).reset();
 
-        // Redirect to .. page
-        navigate("/discover");
+          setErrormsg("");
+          setCurstate("idle");
+
+          // Redirect to .. page
+          navigate("/discover");
+        }
       } catch (error: any) {
         console.error("Error login:", error);
         setErrormsg(error?.response?.data?.message);
