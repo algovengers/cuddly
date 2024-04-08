@@ -42,14 +42,17 @@ function LoginPage() {
     ) {
       try {
         setCurstate("busy");
-        const { data }: any = await axios.post(
+        const { data: userData }: any = await axios.post(
           `${import.meta.env.VITE_BACKEND_PATH}/api/login`,
           formData
         );
+        const { data }: any = userData;
+        // console.log(data);
+        // console.log(data.user);
 
         // set context
-        if (data?.emailId && data?.name) {
-          dispatch(setUser({ name: data.name, email: data.emailId }));
+        if (data?.user?.emailId && data?.user?.name) {
+          dispatch(setUser({ name: data.user.name, email: data.user.emailId }));
 
           // Reset the form
           (e.target as HTMLFormElement).reset();
@@ -70,10 +73,18 @@ function LoginPage() {
 
   async function handleGoogleAuth() {
     setGoogleCurstate("busy");
-    if (await googleAuth()) {
+
+    const { data }: any = await googleAuth();
+    if (data) {
       setGoogleCurstate("idle");
-      // Redirect to .. page
-      navigate("/discover");
+
+      // set context
+      if (data?.user?.emailId && data?.user?.name) {
+        dispatch(setUser({ name: data.user.name, email: data.user.emailId }));
+
+        // Redirect to .. page
+        navigate("/discover");
+      }
     } else {
       setErrormsg("Error in Signing with Google");
       setGoogleCurstate("idle");
