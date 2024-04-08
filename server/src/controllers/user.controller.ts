@@ -16,7 +16,7 @@ const generateAccessToken: (
       emailId,
       username,
     },
-    String(process.env.JWT_KEY_SECRET),
+    String(process.env.JWT_SECRET_KEY),
     {
       expiresIn: "1d",
     }
@@ -27,7 +27,7 @@ const generateRefreshToken: (id: string) => string = (id: string) => {
     {
       id,
     },
-    String(process.env.JWT_KEY_SECRET),
+    String(process.env.JWT_SECRET_KEY),
     {
       expiresIn: "10d",
     }
