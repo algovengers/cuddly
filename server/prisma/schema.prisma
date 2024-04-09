@@ -44,28 +44,3 @@ enum Animal {
   dog
 }
 
-// Define the ChatHistory model
-model ChatHistory {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  sessionId String    @unique
-  messages  Message[]
-}
-
-// Define the Message model
-model Message {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  type          String
-  data          MessageData @relation(fields: [dataId], references: [id])
-  dataId        String      @db.ObjectId
-  chatHistory   ChatHistory @relation(fields: [chatHistoryId], references: [id])
-  chatHistoryId String      @db.ObjectId
-}
-
-// Define the MessageData model
-model MessageData {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  content           String
-  additional_kwargs Json?
-  response_metadata Json?
-  Message           Message[]
-}
