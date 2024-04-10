@@ -7,7 +7,7 @@ import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
 import router from "./routes/router";
 import authRouter from "./routes/authRouter";
 import { authenticateUser } from "./middleware/auth";
-import { chatWithAi } from "./controllers/chat.controller";
+import { chatWithAi, fetchChatMessage } from "./controllers/chat.controller";
 import { MongoClient, ObjectId } from "mongodb";
 
 dotenv.config();
@@ -41,6 +41,11 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/chat", (req, res, next) => {
   req.client = client;
   chatWithAi(req, res, next);
+});
+
+app.get("/chat/:sessionId", (req, res, next) => {
+  req.client = client;
+  fetchChatMessage(req, res, next);
 });
 
 // put routes

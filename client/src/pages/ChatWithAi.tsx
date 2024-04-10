@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import { FiArrowRight } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "@/redux/user";
+import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
+import axios from "axios";
 
 interface ChatMessage {
   text: string;
@@ -60,20 +65,102 @@ function Chat({ text, own, isLoading = false }: ChatMessage) {
 
 const ChatWithAi = () => {
   const [message, setMessage] = useState<string>("");
-  const [chat, setChat] = useState<ChatMsg[]>(dummyChat);
+  const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
+  const history = useNavigate();
+  const dispatch = useDispatch();
+  const chat = useSelector((state: RootState) => state.chat);
+  const [animation, setAnimation] = useState(false);
+
+  useEffect(() => {
+    if (!user.isAuth) {
+      // Redirect to login page
+      history("/login");
+    }
+  }, [user.isAuth, history]);
+
+  useEffect(() => {
+    if (user.email) {
+      axios.get(`http://localhost:5000/chat/${user.email}`).then((response) => {
+        const messages = response.data.data.messages;
+
+        const data = messages.map((m) => {
+          const r = {
+            own: false,
+            message: "",
+          };
+          if (m.id[2] == "HumanMessage") r.own = true;
+          r.message = m.kwargs.content;
+          return r;
+        });
+        dispatch(getChat(data));
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
+
+  function scrollToBottom() {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth", // Optional, adds smooth scrolling effect
+    });
+  }
+
+  async function handleSubmit(e) {
+    setAnimation(true);
+    e.preventDefault();
+    dispatch(addHumanChat({ own: true, message }));
+    setMessage("");
+
+    const requestData = {
+      sessionId: user.email,
+      message,
+    };
+
+    const response = await fetch("http://localhost:5000/chat/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    });
+
+    const reader = response.body!.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let responseText = "";
+
+    while (true) {
+      const chunk = await reader.read();
+      const { done, value } = chunk;
+      if (done) {
+        break;
+      }
+      const decodedChunk = decoder.decode(value);
+      responseText += decodedChunk;
+
+      dispatch(addAichat({ own: false, message: responseText }));
+    }
+    // Define a function to read chunks of data from the stream
+
+    // Start reading the stream
+    setAnimation(false);
+  }
+
   return (
     <div className="px-4 bg-zinc-100 flex-grow pagecont">
-      <div className="min-h-full">
+      <div className="min-h-full  pb-20">
         <div className=" mx-4">
           {/*!chatInit && (
-                <div>
-                  <LoaderRipple />
-                </div>
-              )*/}
+            <div>
+            <LoaderRipple />
+            </div>
+          )*/}
           {/*chatInit && chat.length === 0 && (
-                <div className="flex justify-center items-center min-h-[calc(100vh-130px)]">
-                  <div>
-                    Having questions about Animals or Pets?
+            <div className="flex justify-center items-center min-h-[calc(100vh-130px)]">
+            <div>
+            Having questions about Animals or Pets?
                     <br />
                     Chat with me now.
                   </div>
@@ -92,14 +179,10 @@ const ChatWithAi = () => {
               />
             ))
           }
+          {animation && "freack"}
         </div>
         <div className="fixed bottom-4 p-[6px] w-[calc(100%-16px*2)] bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-            className="flex gap-[6px]"
-          >
+          <form onSubmit={handleSubmit} className="flex gap-[6px]">
             <input
               type="text"
               className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
@@ -109,9 +192,7 @@ const ChatWithAi = () => {
             />
             {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
             <Button
-              onClick={() => {
-                // handleClick();
-              }}
+              type="submit"
               //   disabled={chatState === "busy" ? true : false}
             >
               <FiArrowRight />
