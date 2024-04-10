@@ -204,4 +204,8 @@ const logoutUser = asyncHandler(async (req: Request, res: Response) => {
     .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
-export { registerUser, loginUser, logoutUser, googleSingup };
+
+const isAuthenticated = (req:Request,res:Response)=>{
+  res.status(200).json(new ApiResponse(200,{name : req.user?.name , emailId : req.user?.emailId, id : req.user?.id}))
+}
+export { registerUser, loginUser, logoutUser, googleSingup,isAuthenticated };

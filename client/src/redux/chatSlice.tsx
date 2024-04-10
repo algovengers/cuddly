@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Define your chat state here
 
-const initialState = [];
+const initialState : any[] = [];
 // Initialize your chat state here
 
 const chatSlice = createSlice({

@@ -22,7 +22,7 @@ const userSlice = createSlice({
         email: string | null;
       } = action.payload;
 
-      // console.log(data);
+      console.log(data);
       state.isAuth = true;
       if (data.name && data.email) {
         state.name = data.name;

@@ -72,6 +72,7 @@ const ChatWithAi = () => {
   const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
+    console.log(user.isAuth,user.email)
     if (!user.isAuth) {
       // Redirect to login page
       history("/login");
