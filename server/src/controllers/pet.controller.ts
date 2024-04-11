@@ -43,4 +43,32 @@ const uploadPet = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(200, data, "Pet Created"));
 });
 
-export { uploadPet };
+const explorePets = asyncHandler(async(req:Request,res:Response)=>{
+  let query = req.query as Record<string,string>
+  for(let q in query){
+    if(query[q].length===0){
+      delete query[q]
+    }
+  }
+  let age = 0
+  if(query.age){
+    age = parseInt(query['age'],10)
+  }
+  const data = await prisma.pet.findMany({
+    where : {
+      weight : query['weight'],
+      age :{
+        gte : age
+      },
+      breed : query['breed'],
+      city : query['city'],
+      color : query['color'],
+      gender : query['gender'],
+      personality : query['personality']
+    }
+  })
+  // console.log(data)
+  res.status(200).json(new ApiResponse(200,data))
+})
+
+export { uploadPet,explorePets };
