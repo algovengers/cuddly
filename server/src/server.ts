@@ -7,11 +7,16 @@ import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
 import router from "./routes/router";
 import authRouter from "./routes/authRouter";
 import { authenticateUser } from "./middleware/auth";
-import { chatWithAi } from "./controllers/chat.controller";
+import { chatWithAi, fetchChatMessage } from "./controllers/chat.controller";
+import { MongoClient, ObjectId } from "mongodb";
 
 dotenv.config();
 
 const app: Express = express();
+
+const client = new MongoClient(process.env.MONGO_URI || "", {
+  driverInfo: { name: "langchainjs" },
+});
 
 // use CORS
 app.use(
@@ -33,7 +38,15 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server Of Cuddly");
 });
 
-app.post("/chat", chatWithAi);
+app.post("/chat", (req, res, next) => {
+  req.client = client;
+  chatWithAi(req, res, next);
+});
+
+app.get("/chat/:sessionId", (req, res, next) => {
+  req.client = client;
+  fetchChatMessage(req, res, next);
+});
 
 // put routes
 app.use("/api", router);
@@ -53,6 +66,9 @@ const startServer = async () => {
     const port = String(process.env.SERVER_PORT) || 5000;
     app.listen(port, () => {
       console.log(`Cuddly-server is listening on port ${port} ...`);
+      client.connect().then(() => {
+        console.log("mongodb connected for the langchain");
+      });
     });
   } catch (err) {
     console.log(err);

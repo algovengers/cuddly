@@ -61,7 +61,7 @@ function LoginPage() {
           setCurstate("idle");
 
           // Redirect to .. page
-          navigate("/discover");
+          navigate("/chatwithai");
         }
       } catch (error: any) {
         console.error("Error login:", error);
