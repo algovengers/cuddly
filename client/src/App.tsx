@@ -5,9 +5,17 @@ import Discover from "./pages/discover";
 import Upload from "./pages/upload";
 import ChatWithAi from "./pages/ChatWithAi";
 import store from "./redux/store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
+import Home from "./pages/Home";
+import { useEffect } from "react";
+import axios from "axios";
+import { setLoading, setUser } from "./redux/user";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
   {
     path: "/login",
     element: <LoginPage />,
@@ -27,15 +35,34 @@ const router = createBrowserRouter([
   {
     path: "/chatwithai",
     element: <ChatWithAi />,
+    handle: () => {
+      console.log("hi");
+    },
   },
 ]);
 
 function App() {
-  return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_PATH}/api/isAuthenticated`, {
+        withCredentials: true,
+      })
+      .then((res: any) => {
+        console.log(res.data.data.emailId);
+        dispatch(
+          setUser({
+            name: res.data?.data?.name,
+            email: res.data?.data?.emailId,
+          })
+        );
+      })
+      .finally(() => {
+        dispatch(setLoading({ isLoading: false }));
+      });
+  }, []);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
