@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 import googleAuth from "@/utils/googleAuth";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/user";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setUser } from "@/redux/user";
 
 function LoginPage() {
   const [curstate, setCurstate] = useState<string>("idle");
@@ -24,6 +24,15 @@ function LoginPage() {
   const [errormsg, setErrormsg] = useState<string>("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
+
+  useEffect(() => {
+    console.log(user.isLoading);
+    if (!user.isLoading && user.isAuth) {
+      // Redirect to ai chat page
+      navigate("/chatwithai");
+    }
+  }, [user.isAuth, navigate, user.isLoading]);
 
   async function handleForm(e: React.SyntheticEvent) {
     e.preventDefault();
