@@ -5,7 +5,7 @@ import {
   registerUser,
 } from "../controllers/user.controller";
 // import { chatWithAi } from "controllers/chat.controller";
-import { explorePets } from "../controllers/pet.controller";
+import { expalorePets } from "../controllers/pet.controller";
 import { Router } from "express";
 
 const router = Router();

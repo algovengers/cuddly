@@ -22,7 +22,7 @@ const client = new MongoClient(process.env.MONGO_URI || "", {
 app.use(
   cors({
     // origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
-    origin: "*",
+    origin: true,
     credentials: true,
     exposedHeaders: ["set-cookie"],
   })

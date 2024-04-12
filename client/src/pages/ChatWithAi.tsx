@@ -72,11 +72,13 @@ const ChatWithAi = () => {
   const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
-    if (!user.isAuth) {
+    if (!user.isLoading && !user.isAuth) {
       // Redirect to login page
       history("/login");
     }
-  }, [user.isAuth, history]);
+    // console.log("gg", user.isAuth);
+    // console.log("ggs", user);
+  }, [user.isAuth, history, user.isLoading]);
 
   useEffect(() => {
     if (user.email) {

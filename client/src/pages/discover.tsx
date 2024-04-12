@@ -123,20 +123,20 @@ function Discover() {
                             <Label htmlFor="kolkata">Kolkata</Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Banglore" id="Banglore" />
-                            <Label htmlFor="Banglore">Banglore</Label>
+                            <RadioGroupItem value="banglore" id="banglore" />
+                            <Label htmlFor="banglore">Banglore</Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Mumbai" id="Mumbai" />
-                            <Label htmlFor="Mumbai">Mumbai</Label>
+                            <RadioGroupItem value="mumbai" id="mumbai" />
+                            <Label htmlFor="mumbai">Mumbai</Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Noida" id="Noida" />
-                            <Label htmlFor="Noida">Noida</Label>
+                            <RadioGroupItem value="noida" id="noida" />
+                            <Label htmlFor="noida">Noida</Label>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <RadioGroupItem value="Others" id="Others" />
-                            <Label htmlFor="Others">Others</Label>
+                            <RadioGroupItem value="others" id="others" />
+                            <Label htmlFor="others">Others</Label>
                           </div>
                         </RadioGroup>
                       </div>
