@@ -44,5 +44,5 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export type RootState = ReturnType<typeof userSlice.getState>;
+export type RootState = ReturnType<typeof userSlice.reducer>;
 export const { setUser, unsetUser, setLoading } = userSlice.actions;
