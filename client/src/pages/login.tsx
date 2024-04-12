@@ -16,7 +16,8 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import googleAuth from "@/utils/googleAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setUser } from "@/redux/store";
+import { RootState } from "@/redux/store";
+import { setUser } from "@/redux/user";
 
 function LoginPage() {
   const [curstate, setCurstate] = useState<string>("idle");
