@@ -34,6 +34,8 @@ const formSchema = z.object({
     age: z.string(),
 })
 
+type Form = z.infer<typeof formSchema>
+
 const ImageUpload = ({
     selectedImage,
     setSelectedImage,
@@ -109,6 +111,7 @@ const ImageUpload = ({
     );
 };
 
+
 function Upload() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema)
@@ -126,11 +129,17 @@ function Upload() {
     //   const userId = useSelector((state) => state.auth.userId);
     async function UploadImage() {
         const formData = new FormData();
-
+        formData.append('name',name)
+        for(const [key,value] of Object.entries(data!)){
+            formData.append(key,value)
+        }
+        formData.append('Image',selectedImage!)
         try {
             const data = await axios.post(
-                import.meta.env.VITE_API_LINK + "/api/uploads",
-                formData
+                import.meta.env.VITE_BACKEND_PATH + "/api/upload-a-pet",
+                formData,{
+                    withCredentials : true
+                }
             );
 
             // Handle the response if needed
