@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import { FiArrowRight } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "@/redux/user";
+import { RootState } from "@/redux/store";
 import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
 import axios from "axios";
 
