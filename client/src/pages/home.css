@@ -141,7 +141,6 @@ button {
 }
 
 .rehome-btn {
-  height: 50px;
   width: 160px;
   font-size: 18px;
   font-weight: 300;
@@ -151,6 +150,7 @@ button {
   color: white;
   border-radius: 6px;
   margin-top: 2rem;
+  padding: 10px 0;
 }
 
 .section-3 {
