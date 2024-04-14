@@ -25,6 +25,9 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@radix-ui/react-label";
 import { Checkbox } from "@/components/ui/checkbox";
 
+
+
+
 function DropdownMenuRadioGroupDemo() {
   const [position, setPosition] = React.useState("bottom");
 
@@ -63,7 +66,7 @@ function Discover() {
       <div className="max-w-7xl w-full p-4">
         <div className="w-full text-center">
           {/* header */}
-          <div className="text-3xl my-8">Yay we found 232 pets for you</div>
+          <div className="text-3xl my-8">Yay we found {data.length} pets for you</div>
           <div className="flex justify-between">
             <div>
               <Sheet>
