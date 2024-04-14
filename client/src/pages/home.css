@@ -125,7 +125,7 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem 0;
+  padding: 2rem 15px;
 }
 
 .section-2-main-text {
@@ -141,7 +141,6 @@ button {
 }
 
 .rehome-btn {
-  height: 44px;
   width: 160px;
   font-size: 18px;
   font-weight: 300;
@@ -151,6 +150,7 @@ button {
   color: white;
   border-radius: 6px;
   margin-top: 2rem;
+  padding: 10px 0;
 }
 
 .section-3 {
@@ -229,6 +229,9 @@ button {
 }
 
 @media screen and (max-width: 800px) {
+  .home-header {
+    padding-inline: 15px;
+  }
   .navbut {
     display: block;
   }
@@ -241,6 +244,9 @@ button {
   }
   .text-section {
     width: 100%;
+  }
+  .top-section-main-text {
+    font-size: 25px;
   }
   .section-image-container {
     width: 100%;
