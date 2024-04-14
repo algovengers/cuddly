@@ -74,7 +74,7 @@ button {
   width: 100%;
   background-color: black;
   color: white;
-  padding-inline: 80px;
+  padding-inline: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -114,7 +114,7 @@ button {
 }
 
 .top-section-image {
-  /* height: 360px; */
+  max-height: 360px;
 }
 
 .section-2 {
