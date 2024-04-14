@@ -258,7 +258,7 @@ button {
     z-index: 100;
     right: 0;
     top: 0;
-    bottom: 0;
+    height: 100dvh;
     max-width: 400px;
     width: 90%;
     flex-direction: column;
