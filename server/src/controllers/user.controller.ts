@@ -196,7 +196,7 @@ const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   if (!user) {
     throw new ApiError(401, "Unauthorised Request");
   }
-
+  console.log("hhh", user);
   const options: any = {
     httpOnly: true,
     secure: true,
