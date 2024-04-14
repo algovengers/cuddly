@@ -3,12 +3,22 @@ import main from "../assets/main.jpeg";
 import home1 from "../assets/home3.png";
 import home2 from "../assets/home4.png";
 import home3 from "../assets/home5.png";
+import { useState } from "react";
+import { RiMenu2Fill, RiCloseFill } from "react-icons/ri";
+
 function Home() {
+  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
   return (
     <div className="home-container">
       <header className="home-header">
         <h1 className="logo">Cuddly.com</h1>
-        <ul className="nav">
+        <div
+          className={`navbut ${toggleMenu && "open"}`}
+          onClick={() => setToggleMenu((prev) => !prev)}
+        >
+          {toggleMenu ? <RiCloseFill /> : <RiMenu2Fill />}
+        </div>
+        <ul className={`nav ${toggleMenu && "open"}`}>
           <li className="nav-item">
             <a href="/" className="nav-link">
               Adopt a pet
