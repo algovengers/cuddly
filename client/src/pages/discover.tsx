@@ -66,7 +66,7 @@ function Discover() {
       <div className="max-w-7xl w-full p-4">
         <div className="w-full text-center">
           {/* header */}
-          <div className="text-3xl my-8">Yay we found {data.length} pets for you</div>
+          <div className="text-3xl my-8">Yay we found {data ?  data.length : 0} pets for you</div>
           <div className="flex justify-between">
             <div>
               <Sheet>
