@@ -242,6 +242,9 @@ button {
   .text-section {
     width: 100%;
   }
+  .top-section-main-text {
+    font-size: 25px;
+  }
   .section-image-container {
     width: 100%;
   }
