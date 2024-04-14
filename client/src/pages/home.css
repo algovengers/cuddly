@@ -229,6 +229,9 @@ button {
 }
 
 @media screen and (max-width: 800px) {
+  .home-header {
+    padding-inline: 15px;
+  }
   .navbut {
     display: block;
   }
