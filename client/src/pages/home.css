@@ -74,7 +74,7 @@ button {
   width: 100%;
   background-color: black;
   color: white;
-  padding-inline: 80px;
+  padding-inline: 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -114,7 +114,7 @@ button {
 }
 
 .top-section-image {
-  /* height: 360px; */
+  max-height: 360px;
 }
 
 .section-2 {
@@ -258,12 +258,14 @@ button {
     z-index: 100;
     right: 0;
     top: 0;
-    bottom: 0;
+    height: 100lvh;
     max-width: 400px;
     width: 90%;
     flex-direction: column;
-    background-image: linear-gradient(180deg, #ffebc4, #fd9);
-    background-color: #ffebc4;
+    /* background-image: linear-gradient(180deg, #ffebc4, #fd9); */
+    /* background-color: #ffebc4; */
+    background-color: #eeeeeee1;
+    backdrop-filter: blur(15px);
     box-shadow: rgba(0, 0, 0, 0.4) -3px 0px 7px;
     transform: translateX(100%);
     padding: 40px;
