@@ -344,7 +344,7 @@ function Upload() {
                                                             { type === "dog" && 
                                                                 <>
                                                                 <SelectItem value="bulldog">BullDog</SelectItem>
-                                                                <SelectItem value="Labrador">Labrador</SelectItem>
+                                                                <SelectItem value="labrador">Labrador</SelectItem>
                                                                 <SelectItem value="german-shepherd">German shepherd</SelectItem>
                                                                 <SelectItem value="rottweiler">Rottweiler</SelectItem>
                                                                 <SelectItem value="golden-retriever">Golden Retriever</SelectItem>

@@ -43,8 +43,11 @@ const uploadPet = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(200, data, "Pet Created"));
 });
 
+type Animal = "dog" | "cat"
+
 const explorePets = asyncHandler(async(req:Request,res:Response)=>{
   let query = req.query as Record<string,string>
+  console.log(query)
   for(let q in query){
     if(query[q].length===0){
       delete query[q]
@@ -64,7 +67,8 @@ const explorePets = asyncHandler(async(req:Request,res:Response)=>{
       city : query['city'],
       color : query['color'],
       gender : query['gender'],
-      personality : query['personality']
+      personality : query['personality'],
+      type : query['type'] as Animal
     }
   })
   // console.log(data)
