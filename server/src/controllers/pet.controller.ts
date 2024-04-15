@@ -47,7 +47,6 @@ type Animal = "dog" | "cat"
 
 const explorePets = asyncHandler(async(req:Request,res:Response)=>{
   let query = req.query as Record<string,string>
-  console.log(query)
   for(let q in query){
     if(query[q].length===0){
       delete query[q]
@@ -57,6 +56,7 @@ const explorePets = asyncHandler(async(req:Request,res:Response)=>{
   if(query.age){
     age = parseInt(query['age'],10)
   }
+  let color = query['color']?.split('%2C') ?? []
   const data = await prisma.pet.findMany({
     where : {
       weight : query['weight'],
@@ -65,7 +65,7 @@ const explorePets = asyncHandler(async(req:Request,res:Response)=>{
       },
       breed : query['breed'],
       city : query['city'],
-      color : query['color'],
+      color : {in : color},
       gender : query['gender'],
       personality : query['personality'],
       type : query['type'] as Animal

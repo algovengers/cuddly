@@ -571,6 +571,94 @@ function Discover() {
                                           );
                                         }}
                                       />
+                                                                            <FormField
+                                        name="color"
+                                        control={form.control}
+                                        render={({ field }) => {
+                                          return (
+                                            <FormItem>
+                                              <FormControl>
+                                                <Checkbox
+                                                  defaultChecked={searchParams
+                                                    .get("color")
+                                                    ?.split("%2C")
+                                                    .includes("white")}
+                                                  checked={field.value?.includes(
+                                                    "white"
+                                                  )}
+                                                  onCheckedChange={(
+                                                    checked
+                                                  ) => {
+                                                    if (
+                                                      field.value === undefined
+                                                    ) {
+                                                      return field.onChange([
+                                                        "white",
+                                                      ]);
+                                                    }
+                                                    return checked
+                                                      ? field.onChange([
+                                                          ...field.value,
+                                                          "white",
+                                                        ])
+                                                      : field.onChange(
+                                                          field.value?.filter(
+                                                            (value) =>
+                                                              value !== "white"
+                                                          )
+                                                        );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormLabel>White</FormLabel>
+                                            </FormItem>
+                                          );
+                                        }}
+                                      />
+                                      <FormField
+                                        name="color"
+                                        control={form.control}
+                                        render={({ field }) => {
+                                          return (
+                                            <FormItem>
+                                              <FormControl>
+                                                <Checkbox
+                                                  defaultChecked={searchParams
+                                                    .get("color")
+                                                    ?.split("%2C")
+                                                    .includes("others")}
+                                                  checked={field.value?.includes(
+                                                    "others"
+                                                  )}
+                                                  onCheckedChange={(
+                                                    checked
+                                                  ) => {
+                                                    if (
+                                                      field.value === undefined
+                                                    ) {
+                                                      return field.onChange([
+                                                        "others",
+                                                      ]);
+                                                    }
+                                                    return checked
+                                                      ? field.onChange([
+                                                          ...field.value,
+                                                          "others",
+                                                        ])
+                                                      : field.onChange(
+                                                          field.value?.filter(
+                                                            (value) =>
+                                                              value !== "others"
+                                                          )
+                                                        );
+                                                  }}
+                                                />
+                                              </FormControl>
+                                              <FormLabel>Others</FormLabel>
+                                            </FormItem>
+                                          );
+                                        }}
+                                      />
                                     </FormItem>
                                   );
                                 }}
