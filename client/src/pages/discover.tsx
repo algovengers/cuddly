@@ -466,15 +466,15 @@ function Discover() {
                                                     }
                                                     return checked
                                                       ? field.onChange([
-                                                          ...field.value,
-                                                          "black",
-                                                        ])
+                                                        ...field.value,
+                                                        "black",
+                                                      ])
                                                       : field.onChange(
-                                                          field.value?.filter(
-                                                            (value) =>
-                                                              value !== "black"
-                                                          )
-                                                        );
+                                                        field.value?.filter(
+                                                          (value) =>
+                                                            value !== "black"
+                                                        )
+                                                      );
                                                   }}
                                                 />
                                               </FormControl>
@@ -510,15 +510,15 @@ function Discover() {
                                                     }
                                                     return checked
                                                       ? field.onChange([
-                                                          ...field.value,
-                                                          "gray",
-                                                        ])
+                                                        ...field.value,
+                                                        "gray",
+                                                      ])
                                                       : field.onChange(
-                                                          field.value?.filter(
-                                                            (value) =>
-                                                              value !== "gray"
-                                                          )
-                                                        );
+                                                        field.value?.filter(
+                                                          (value) =>
+                                                            value !== "gray"
+                                                        )
+                                                      );
                                                   }}
                                                 />
                                               </FormControl>
@@ -554,15 +554,15 @@ function Discover() {
                                                     }
                                                     return checked
                                                       ? field.onChange([
-                                                          ...field.value,
-                                                          "brown",
-                                                        ])
+                                                        ...field.value,
+                                                        "brown",
+                                                      ])
                                                       : field.onChange(
-                                                          field.value?.filter(
-                                                            (value) =>
-                                                              value !== "brown"
-                                                          )
-                                                        );
+                                                        field.value?.filter(
+                                                          (value) =>
+                                                            value !== "brown"
+                                                        )
+                                                      );
                                                   }}
                                                 />
                                               </FormControl>
@@ -571,7 +571,7 @@ function Discover() {
                                           );
                                         }}
                                       />
-                                                                            <FormField
+                                      <FormField
                                         name="color"
                                         control={form.control}
                                         render={({ field }) => {
@@ -598,15 +598,15 @@ function Discover() {
                                                     }
                                                     return checked
                                                       ? field.onChange([
-                                                          ...field.value,
-                                                          "white",
-                                                        ])
+                                                        ...field.value,
+                                                        "white",
+                                                      ])
                                                       : field.onChange(
-                                                          field.value?.filter(
-                                                            (value) =>
-                                                              value !== "white"
-                                                          )
-                                                        );
+                                                        field.value?.filter(
+                                                          (value) =>
+                                                            value !== "white"
+                                                        )
+                                                      );
                                                   }}
                                                 />
                                               </FormControl>
@@ -642,15 +642,15 @@ function Discover() {
                                                     }
                                                     return checked
                                                       ? field.onChange([
-                                                          ...field.value,
-                                                          "others",
-                                                        ])
+                                                        ...field.value,
+                                                        "others",
+                                                      ])
                                                       : field.onChange(
-                                                          field.value?.filter(
-                                                            (value) =>
-                                                              value !== "others"
-                                                          )
-                                                        );
+                                                        field.value?.filter(
+                                                          (value) =>
+                                                            value !== "others"
+                                                        )
+                                                      );
                                                   }}
                                                 />
                                               </FormControl>
