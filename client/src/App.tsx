@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import { useEffect } from "react";
 import axios from "axios";
 import { setLoading, setUser } from "./redux/user";
+import PetData from "./pages/PetData";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
     handle: () => {
       console.log("hi");
     },
+  },
+  {
+    path: "/pet/:id",
+    element : <PetData />
   },
   {
     path: "/discover",

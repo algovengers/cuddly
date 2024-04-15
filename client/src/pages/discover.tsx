@@ -34,7 +34,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const filter_schema = z.object({
   color: z.array(z.string()).optional(),
@@ -719,12 +719,14 @@ function Discover() {
               data.map((res) => {
                 return (
                   <div>
+                    <Link to={`/pet/${res.id}`}>
                     <PetCard
                       name={res.name}
                       image={res.Image}
                       gender={res.gender}
                       location={res.city}
-                    />
+                      />
+                      </Link>
                   </div>
                 );
               })}

@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { asyncHandler } from "../utils/asyncHandler";
-import { prisma } from "../utils/prisma";
+import { exclude, prisma } from "../utils/prisma";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import ApiResponse from "../utils/ApiResponse";
 
@@ -75,4 +75,20 @@ const explorePets = asyncHandler(async(req:Request,res:Response)=>{
   res.status(200).json(new ApiResponse(200,data))
 })
 
-export { uploadPet,explorePets };
+const getPet = asyncHandler(async(req:Request,res: Response)=>{
+  const id = req.params.id
+  const data = await prisma.pet.findFirstOrThrow({
+    where : {
+      id
+    },
+    include : {
+      owner : true
+    }
+  })
+  const filteredData = {...data,
+    owner : exclude(data.owner,["password","refreshToken"])
+  }
+  res.status(200).json(new ApiResponse(200,filteredData))
+})
+
+export { uploadPet,explorePets , getPet };
