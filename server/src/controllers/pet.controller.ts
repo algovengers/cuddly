@@ -56,7 +56,7 @@ const explorePets = asyncHandler(async(req:Request,res:Response)=>{
   if(query.age){
     age = parseInt(query['age'],10)
   }
-  let color = query['color']?.split('%2C') ?? []
+  let color = query['color']?.split('%2C') 
   const data = await prisma.pet.findMany({
     where : {
       weight : query['weight'],
