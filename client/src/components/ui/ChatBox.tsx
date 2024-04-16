@@ -1,6 +1,7 @@
 import profilePic from '../../assets/home4.png'
 import sampleImg from '../../assets/main.jpeg';
 
+
 export default function ChatBox() {
   return (
     <div className="user-chats">
@@ -56,6 +57,20 @@ export default function ChatBox() {
                     </label>
                     <input type="file" name="file" id="file" className='imageInput' />
                     </div>
+                    </header>
+                    <ul className="message-list">
+                    <li className="message-item user-message">Hi, how are you?</li>
+                    <li className="message-item user">hello</li>
+                    <li className="message-item user">I'm fine.</li>
+                    <li className="message-item user-message">I'm interseted in adoption you dog?</li>
+                    <li className="message-item user">that's great</li>
+                    <li className="message-item user">let's meet</li>
+
+
+                    </ul>
+                </div>
+                <form className="sendMessageContainer">
+                    <input type="text" className="messageInput" />
                     <button type="submit" className='send-button'><span className="material-symbols-outlined">send</span></button>
                 </form>
             </div>

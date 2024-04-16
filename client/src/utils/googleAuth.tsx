@@ -34,7 +34,8 @@ async function googleAuth() {
     console.log(formData);
     const { data: userData }: any = await axios.post(
       `${import.meta.env.VITE_BACKEND_PATH}/api/signinwithgoogle`,
-      formData
+      formData,
+      { headers: {}, withCredentials: true }
     );
 
     return userData;

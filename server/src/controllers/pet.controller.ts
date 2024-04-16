@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { asyncHandler } from "../utils/asyncHandler";
-import { prisma } from "../utils/prisma";
+import { exclude, prisma } from "../utils/prisma";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import ApiResponse from "../utils/ApiResponse";
 
@@ -43,4 +43,52 @@ const uploadPet = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json(new ApiResponse(200, data, "Pet Created"));
 });
 
-export { uploadPet };
+type Animal = "dog" | "cat"
+
+const explorePets = asyncHandler(async(req:Request,res:Response)=>{
+  let query = req.query as Record<string,string>
+  for(let q in query){
+    if(query[q].length===0){
+      delete query[q]
+    }
+  }
+  let age = 0
+  if(query.age){
+    age = parseInt(query['age'],10)
+  }
+  let color = query['color']?.split('%2C') 
+  const data = await prisma.pet.findMany({
+    where : {
+      weight : query['weight'],
+      age :{
+        gte : age
+      },
+      breed : query['breed'],
+      city : query['city'],
+      color : {in : color},
+      gender : query['gender'],
+      personality : query['personality'],
+      type : query['type'] as Animal
+    }
+  })
+  // console.log(data)
+  res.status(200).json(new ApiResponse(200,data))
+})
+
+const getPet = asyncHandler(async(req:Request,res: Response)=>{
+  const id = req.params.id
+  const data = await prisma.pet.findFirstOrThrow({
+    where : {
+      id
+    },
+    include : {
+      owner : true
+    }
+  })
+  const filteredData = {...data,
+    owner : exclude(data.owner,["password","refreshToken"])
+  }
+  res.status(200).json(new ApiResponse(200,filteredData))
+})
+
+export { uploadPet,explorePets , getPet };

@@ -3,12 +3,38 @@ import main from "../assets/main.jpeg";
 import home1 from "../assets/home3.png";
 import home2 from "../assets/home4.png";
 import home3 from "../assets/home5.png";
+import { useState } from "react";
+import { RiMenu2Fill, RiCloseFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import logout from "@/utils/logout";
+import { unsetUser } from "@/redux/user";
+import { Loader2 } from "lucide-react";
+
 function Home() {
+  const [toggleMenu, setToggleMenu] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
+
+  async function handleLogout() {
+    if (await logout()) {
+      dispatch(unsetUser());
+    }
+  }
+
   return (
     <div className="home-container">
       <header className="home-header">
         <h1 className="logo">Cuddly.com</h1>
-        <ul className="nav">
+        <div
+          className={`navbut ${toggleMenu && "open"}`}
+          onClick={() => setToggleMenu((prev) => !prev)}
+        >
+          {toggleMenu ? <RiCloseFill /> : <RiMenu2Fill />}
+        </div>
+        <ul className={`nav ${toggleMenu && "open"}`}>
           <li className="nav-item">
             <a href="/" className="nav-link">
               Adopt a pet
@@ -30,7 +56,21 @@ function Home() {
             </a>
           </li>
           <li className="nav-item">
-            <button className="login-btn">Login</button>
+            <button
+              className="login-btn"
+              onClick={() =>
+                user.isLoading === false &&
+                (user.isAuth === true ? handleLogout() : navigate("/login"))
+              }
+            >
+              {user.isLoading === true ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : user.isAuth === true ? (
+                "Logout"
+              ) : (
+                "Login"
+              )}
+            </button>
           </li>
         </ul>
       </header>
