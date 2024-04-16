@@ -1,3 +1,8 @@
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+
 .profile-container {
     height: 100vh;
     margin-inline: auto;
@@ -137,6 +142,7 @@
 
 }
 
+
 .chat-item {
     height: 60px;
     width: 100%;
@@ -175,6 +181,7 @@
     font-weight: 400;
 }
 
+
 .last-chat {
     font-size: 0.8rem;
     /* font-weight: 300; */
@@ -192,7 +199,7 @@
     height: calc(100% - 60px);
     width: 100%;
     background-color: rgb(136, 136, 166);
-    padding: ;
+
 }
 
 .chat-header {
@@ -204,7 +211,30 @@
     align-items: center;
     padding-left: 1rem;
     border-bottom: 1px solid grey;
+    position: relative;
+}
 
+.calling-buttons {
+    justify-self: flex-end;
+    height: 90%;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    /* background-color: yellow; */
+    position: absolute;
+    right: 0;
+    /* top: 0; */
+}
+
+.callicon {
+    font-size: 1.3rem;
+}
+
+.video-call-btn,
+.audio-call-btn {
+    font-size: 0.8rem;
 }
 
 .message-list {
@@ -214,10 +244,14 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    overflow: auto;
+
 }
 
 .message-item {
     /* list-style-type: none; */
+    max-height: 100px;
+    max-width: max-content;
     min-height: 40px;
     width: max-content;
     background-color: white;
@@ -225,6 +259,29 @@
     display: flex;
     align-items: center;
     justify-content: start;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+}
+
+.my-message {
+    align-self: end;
+    right: 0;
+    background-color: rgb(13, 13, 238);
+    color: white;
+}
+
+.chat-file {
+    max-height: 200px;
+    min-width: max-content;
+    border-radius: 4px;
+    background: none;
+}
+
+.chat-image {
+    max-height: 180px;
+    border-radius: 4px;
+    /* width: ; */
     padding-inline: 0.5rem;
     font-size: 0.8rem;
 }
@@ -243,6 +300,42 @@
     justify-content: center;
     align-items: center;
 }
+
+.message-input-group {
+    height: 100%;
+    width: calc(100% - 80px);
+    display: flex;
+    align-items: center;
+
+}
+
+.messageInput {
+    height: 40px;
+    width: calc(100% - 40px);
+    padding-inline-start: 1rem;
+    outline: none;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 0.9rem;
+}
+
+.imageInput {
+    display: none;
+}
+
+.file-input-label {
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    font-size: 0.9rem;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
 
 .messageInput {
     height: 40px;
