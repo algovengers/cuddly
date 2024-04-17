@@ -87,9 +87,10 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
   const filteredUser = exclude(updatedUser!, ["password", "refreshToken"]);
 
-  const options = {
+  const options: any = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
 
   return res
@@ -125,10 +126,12 @@ const googleSingup = asyncHandler(async (req: Request, res: Response) => {
       userExists.name
     );
 
-    const options = {
+    const options: any = {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     };
+
     const filteredUser = exclude(userExists, ["password", "refreshToken"]);
 
     return res
@@ -162,9 +165,10 @@ const googleSingup = asyncHandler(async (req: Request, res: Response) => {
     newUser.name
   );
 
-  const options = {
+  const options: any = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
 
   return res
@@ -192,9 +196,11 @@ const logoutUser = asyncHandler(async (req: Request, res: Response) => {
   if (!user) {
     throw new ApiError(401, "Unauthorised Request");
   }
-  const options = {
+  console.log("hhh", user);
+  const options: any = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
   };
 
   return res
@@ -204,4 +210,14 @@ const logoutUser = asyncHandler(async (req: Request, res: Response) => {
     .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
-export { registerUser, loginUser, logoutUser, googleSingup };
+const isAuthenticated = (req: Request, res: Response) => {
+  res.status(200).json(
+    new ApiResponse(200, {
+      name: req.user?.name,
+      emailId: req.user?.emailId,
+      id: req.user?.id,
+    })
+  );
+};
+
+export { registerUser, loginUser, logoutUser, googleSingup, isAuthenticated };

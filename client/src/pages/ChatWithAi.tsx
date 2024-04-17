@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import { FiArrowRight } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "@/redux/user";
+import { RootState } from "@/redux/store";
 import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
 import axios from "axios";
 
@@ -72,11 +72,13 @@ const ChatWithAi = () => {
   const [animation, setAnimation] = useState(false);
 
   useEffect(() => {
-    if (!user.isAuth) {
+    if (!user.isLoading && !user.isAuth) {
       // Redirect to login page
       history("/login");
     }
-  }, [user.isAuth, history]);
+    // console.log("gg", user.isAuth);
+    // console.log("ggs", user);
+  }, [user.isAuth, history, user.isLoading]);
 
   useEffect(() => {
     if (user.email) {
