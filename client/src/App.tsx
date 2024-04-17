@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { setLoading, setUser } from "./redux/user";
 import PetData from "./pages/PetData";
+
 import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
@@ -77,6 +78,7 @@ function App() {
     }, []);
 
     return <RouterProvider router={router} />;
+
 }
 
 export default App;

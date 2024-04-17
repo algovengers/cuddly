@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "@/redux/store";
 import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
 import axios from "axios";
+import LoadingComponent from "@/components/LoadingComponent";
 
 interface ChatMessage {
     text: string;
@@ -64,53 +65,86 @@ function Chat({ text, own, isLoading = false }: ChatMessage) {
 }
 
 const ChatWithAi = () => {
-    const [message, setMessage] = useState<string>("");
-    const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
-    const history = useNavigate();
-    const dispatch = useDispatch();
-    const chat = useSelector((state: RootState) => state.chat);
-    const [animation, setAnimation] = useState(false);
 
-    useEffect(() => {
-        if (!user.isLoading && !user.isAuth) {
-            // Redirect to login page
-            history("/login");
-        }
-        // console.log("gg", user.isAuth);
-        // console.log("ggs", user);
-    }, [user.isAuth, history, user.isLoading]);
+  const [message, setMessage] = useState<string>("");
+  const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
+  const history = useNavigate();
+  const dispatch = useDispatch();
+  const chat = useSelector((state: RootState) => state.chat);
+  const [animation, setAnimation] = useState(false);
 
-    useEffect(() => {
-        if (user.email) {
-            axios
-                .get(`http://localhost:5000/chat/${user.email}`)
-                .then((response) => {
-                    const messages = response.data.data.messages;
+  // useEffect(() => {
+  //   if (!user.isLoading && !user.isAuth) {
+  //     // Redirect to login page
+  //     history("/login");
+  //   }
+  //   // console.log("gg", user.isAuth);
+  //   // console.log("ggs", user);
+  // }, [user.isAuth, history, user.isLoading]);
 
-                    const data = messages.map((m) => {
-                        const r = {
-                            own: false,
-                            message: "",
-                        };
-                        if (m.id[2] == "HumanMessage") r.own = true;
-                        r.message = m.kwargs.content;
-                        return r;
-                    });
-                    dispatch(getChat(data));
-                });
-        }
-    }, [user.isLoading]);
+  // useEffect(() => {
+  //   // if (user.email) {
+  //     // const formData = new FormData();
+  //     // formData.append('chat',message)
+  //     // axios.post(`https://cuddly-azcl.onrender.com/`,{formData}).then((response) => {
+  //     //   const messages = response.data.data.messages;
 
-    useEffect(() => {
-        scrollToBottom();
-    }, [chat]);
+  //     //   const data = messages.map((m) => {
+  //     //     const r = {
+  //     //       own: false,
+  //     //       message: "",
+  //     //     };
+  //     //     if (m.id[2] == "HumanMessage") r.own = true;
+  //     //     r.message = m.kwargs.content;
+  //     //     return r;
+  //     //   });
+  //     //   dispatch(getChat(data));
+  //     // });
+  // }, []);
 
-    function scrollToBottom() {
-        window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: "smooth", // Optional, adds smooth scrolling effect
-        });
-    }
+  useEffect(() => {
+    scrollToBottom();
+  }, [chat]);
+
+  function scrollToBottom() {
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth", // Optional, adds smooth scrolling effect
+    });
+  }
+
+  async function handleSubmit(e) {
+    setAnimation(true);
+    e.preventDefault();
+    dispatch(addHumanChat({ own: true, message }));
+    setMessage("");
+
+    const requestData = {
+      sessionId: user.email,
+      message,
+    };
+    let formData = new FormData()
+    const response = await axios.post(import.meta.env.VITE_CHAT_PATH,{
+      "chat" : message
+    })
+    console.log(response)
+    // const reader = response.body!.getReader();
+    // const decoder = new TextDecoder("utf-8");
+    // let responseText = "";
+    const ans = response.data.result
+    dispatch(addAichat({ own: false, message: ans }));
+    // while (true) {
+    //   const chunk = await reader.read();
+    //   const { done, value } = chunk;
+    //   if (done) {
+    //     break;
+    //   }
+    //   const decodedChunk = decoder.decode(value);
+    //   responseText += decodedChunk;
+
+    // }
+    // Define a function to read chunks of data from the stream
+
 
     async function handleSubmit(e) {
         setAnimation(true);
@@ -131,32 +165,13 @@ const ChatWithAi = () => {
             body: JSON.stringify(requestData),
         });
 
-        const reader = response.body!.getReader();
-        const decoder = new TextDecoder("utf-8");
-        let responseText = "";
 
-        while (true) {
-            const chunk = await reader.read();
-            const { done, value } = chunk;
-            if (done) {
-                break;
-            }
-            const decodedChunk = decoder.decode(value);
-            responseText += decodedChunk;
+  return (
+    <div className="px-4 bg-zinc-100 flex-grow pagecont min-h-screen">
+      <div className="min-h-full  pb-20">
+        <div className=" mx-4">
+          {/*!chatInit && (
 
-            dispatch(addAichat({ own: false, message: responseText }));
-        }
-        // Define a function to read chunks of data from the stream
-
-        // Start reading the stream
-        setAnimation(false);
-    }
-
-    return (
-        <div className="px-4 bg-zinc-100 flex-grow pagecont">
-            <div className="min-h-full  pb-20">
-                <div className=" mx-4">
-                    {/*!chatInit && (
             <div>
             <LoaderRipple />
             </div>
@@ -173,37 +188,41 @@ const ChatWithAi = () => {
                     {
                         /*chatInit &&
                 chat &&*/
-                        chat?.map((item, i) => (
-                            <Chat
-                                text={item.message}
-                                isLoading={item.isLoading}
-                                own={item.own}
-                                imgLink={item.imgLink}
-                                key={i}
-                            />
-                        ))
-                    }
-                    {animation && "freack"}
-                </div>
-                <div className="fixed bottom-4 p-[6px] w-[calc(100%-16px*2)] bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
-                    <form onSubmit={handleSubmit} className="flex gap-[6px]">
-                        <input
-                            type="text"
-                            className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
-                            placeholder="Describe your problem ..."
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                        {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
-                        <Button
-                            type="submit"
-                            //   disabled={chatState === "busy" ? true : false}
-                        >
-                            <FiArrowRight />
-                        </Button>
-                    </form>
-                </div>
+
+            chat?.map((item, i) => (
+              <Chat
+                text={item.message}
+                isLoading={item.isLoading}
+                own={item.own}
+                imgLink={item.imgLink}
+                key={i}
+              />
+            ))
+          }
+          {animation && 
+          <div className="mt-4">
+            <LoadingComponent />
             </div>
+            }
+        </div>
+        <div className="fixed bottom-4 p-[6px] w-[calc(100%-16px*2)] bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
+          <form onSubmit={handleSubmit} className="flex gap-[6px]">
+            <input
+              type="text"
+              className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
+              placeholder="Describe your problem ..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
+            <Button
+              type="submit"
+              //   disabled={chatState === "busy" ? true : false}
+            >
+              <FiArrowRight />
+            </Button>
+          </form>
+
         </div>
     );
 };
