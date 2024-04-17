@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 from pymongo import MongoClient
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
 from langchain_mongodb import MongoDBAtlasVectorSearch
 from langchain_google_genai import GoogleGenerativeAI,ChatGoogleGenerativeAI
 from langchain.chains import RetrievalQA
@@ -21,14 +21,14 @@ collection_name = "collection_of_text_blobs"
 collection= client[dbname][collection_name]
 
 embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")
+HF_API_KEY = os.getenv('HUGGINGFACEHUB_API_TOKEN')
+API_KEY = os.getenv('API_KEY')
 
-embeddings = HuggingFaceEmbeddings(model_name=embeddings_model_name)
+embeddings = HuggingFaceInferenceAPIEmbeddings(api_key=HF_API_KEY,model_name=embeddings_model_name)
 
 vector_store = MongoDBAtlasVectorSearch(collection=collection,embedding=embeddings,index_name="vector_index")
 
 
-API_KEY = os.getenv('API_KEY')
-HF_API_KEY = os.getenv('HUGGINGFACEHUB_API_TOKEN')
 
 
 # def build_chain():
@@ -59,7 +59,6 @@ def query_data(query):
 
     # as_output = docs[0].page_content
     # print(as_output)
-    llm= HuggingFaceHub(repo_id="google/flan-t5-large", model_kwargs={"temperature":1e-10})
     # llm= HuggingFaceHub(repo_id="satvikag/chatbot", model_kwargs={"temperature":1e-10})
     llm = GoogleGenerativeAI(model='gemini-pro',google_api_key=API_KEY,temperature=0.9,top_p=0.2)
     # llm = ChatGoogleGenerativeAI(model='gemini-pro',google_api_key=API_KEY,temperature=0.9,top_p=0.2,callbacks=[StreamingStdOutCallbackHandler()])
