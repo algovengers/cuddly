@@ -10,8 +10,10 @@ from langchain.prompts import PromptTemplate
 from langchain_community.llms.huggingface_hub import HuggingFaceHub
 # from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from flask import Flask, jsonify,request,make_response
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 
 
@@ -76,13 +78,18 @@ def query_data(query):
 # query_data("My cat is feeling lazy. What should i do?")
 
 @app.route('/',methods=['POST'])
+@cross_origin(supports_credentials=True)
 def chat():
-    chat = request.form['chat']
-    res = query_data(chat)
-    response = make_response(res)
-    return response
+    if request.method == 'POST':
+        print(request.data)
+        chat_data = request.json
+        chat = chat_data.get('chat')  # Extracting chat message from JSON
+        res = query_data(chat)
+        response = make_response(res)
+        return response
 
 @app.route('/cron',methods=['GET'])
+@cross_origin(supports_credentials=True)
 def cron():
     return "hi"
 

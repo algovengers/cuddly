@@ -13,4 +13,5 @@ langchain-google-vertexai
 langchain-mongodb
 langchain_openai
 Flask
+flask-cors
 Gunicorn
