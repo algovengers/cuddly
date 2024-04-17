@@ -1,0 +1,16 @@
+langchain
+langchain_community
+langchain-google-genai
+pymongo
+pypdf
+bs4
+requests
+python-dotenv
+InstructorEmbedding
+sentence-transformers==2.2.2
+vertexai
+langchain-google-vertexai
+langchain-mongodb
+langchain_openai
+Flask
+Gunicorn
