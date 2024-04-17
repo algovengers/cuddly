@@ -1,5 +1,7 @@
 import profilePic from '../../assets/home4.png'
 import sampleImg from '../../assets/main.jpeg';
+import FileMessageItem from './FileMessageItem';
+import MessageItem from './MessageItem';
 
 export default function ChatBox() {
   return (
@@ -32,19 +34,13 @@ export default function ChatBox() {
                     </header>
                     <ul className="message-list">
                         
-                        <li className="message-item ">I'm fine.</li>
-                        <li className="message-item my-message">I'm interseted in adoption you dog?</li>
-                        <li className="message-item ">that's great</li>
-                        <li className="message-item ">let's meet</li>
-                        <li className="message-item my-message">Hi, how are you?</li>
-                        <li className="message-item ">hello Lorem ipsum olor sit, amet consectetur adipisicing elit. Est quas nemo rem provident ex quaerat nisi reiciendis modi eaque commodi.</li>
-                        <li className="message-item ">I'm fine.</li>
-                        <li className="message-item my-message">I'm interseted in adoption you dog?</li>
-                        <li className="message-item ">that's great</li>
-                        <li className="message-item ">let's meet</li>
-                        <li className='message-item my-message chat-file'>
-                            <img src={sampleImg} alt="chat-img" className='chat-image'/>
-                        </li>
+                        <MessageItem isMyMessage={true}>Hi,How are you?</MessageItem>
+                        <MessageItem>I'm fine</MessageItem>
+                        <MessageItem isMyMessage={true}>I'm interseted in adopting you dog?</MessageItem>
+                        <MessageItem>that's Lorem ipsum dolor sit amet consectetur Lorem lorem100 ipsum dolor sit amet consectetur adipisicing elit. Facilis, excepturi accusamus quis dolorum magnam, nam maxime eos fugit officia aperiam deleniti officiis, architecto alias dolorem totam minima vero. Illo delectus asperiores repudiandae vel, eaque quod? adipisicing elit. Vel perferendis commodi doloribus quas at culpa provident fuga et cupiditate aliquid? great</MessageItem>
+                        <MessageItem>let's meet</MessageItem>
+                        <FileMessageItem src={sampleImg} isMyMessage={true}/>
+                        <FileMessageItem src={sampleImg}/>
                     </ul>
                 </div>
                 <form className="sendMessageContainer">

@@ -264,8 +264,9 @@
 
 .message-item {
     /* list-style-type: none; */
-    max-height: 100px;
-    max-width: max-content;
+    max-height: 350px;
+    width: max-content;
+    max-width: 75%;
     background-color: white;
     border-radius: 6px;
     display: flex;
@@ -284,16 +285,18 @@
 }
 
 .chat-file {
-    max-height: 200px;
+    max-height: 250px;
     min-width: max-content;
     border-radius: 4px;
     background: none;
+    display: flex;
+    padding: 0;
+
 }
 
 .chat-image {
     max-height: 180px;
     border-radius: 4px;
-    /* width: ; */
 }
 
 .sendMessageContainer {
