@@ -9,157 +9,159 @@ import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
 import axios from "axios";
 
 interface ChatMessage {
-  text: string;
-  own: boolean;
-  imgLink?: string;
-  isLoading?: boolean;
+    text: string;
+    own: boolean;
+    imgLink?: string;
+    isLoading?: boolean;
 }
 
 interface ChatMsg {
-  message: string;
-  own: boolean;
-  imgLink?: string;
-  isLoading?: boolean;
+    message: string;
+    own: boolean;
+    imgLink?: string;
+    isLoading?: boolean;
 }
 
 const dummyChat: ChatMsg[] = [
-  {
-    message: "hello",
-    own: true,
-  },
-  {
-    message: "hey this your ai",
-    own: false,
-  },
-  {
-    message: "how are you",
-    own: true,
-  },
-  {
-    message: "i am fine",
-    own: false,
-  },
+    {
+        message: "hello",
+        own: true,
+    },
+    {
+        message: "hey this your ai",
+        own: false,
+    },
+    {
+        message: "how are you",
+        own: true,
+    },
+    {
+        message: "i am fine",
+        own: false,
+    },
 ];
 
 function Chat({ text, own, isLoading = false }: ChatMessage) {
-  return (
-    <div
-      className={`${""} ${own && "pt-[20px] pb-[10px]"} ${
-        !own && "border-b-[1px] border-zinc-400 pt-[10px] pb-[20px]"
-      }`}
-    >
-      <div
-        className={`${""} ${
-          own &&
-          "p-[10px] bg-white rounded-lg w-fit shadow-[0_0_5px_3px_rgba(0,0,0,0.05),0_0_1px_1px_rgba(0,0,0,0.07)]"
-        }`}
-      >
-        <Markdown>{text}</Markdown>
-      </div>
-      {isLoading && (
-        <div className="bg-[#00000099] w-[16px] h-[16px] rounded-full"></div>
-      )}
-    </div>
-  );
+    return (
+        <div
+            className={`${""} ${own && "pt-[20px] pb-[10px]"} ${
+                !own && "border-b-[1px] border-zinc-400 pt-[10px] pb-[20px]"
+            }`}
+        >
+            <div
+                className={`${""} ${
+                    own &&
+                    "p-[10px] bg-white rounded-lg w-fit shadow-[0_0_5px_3px_rgba(0,0,0,0.05),0_0_1px_1px_rgba(0,0,0,0.07)]"
+                }`}
+            >
+                <Markdown>{text}</Markdown>
+            </div>
+            {isLoading && (
+                <div className="bg-[#00000099] w-[16px] h-[16px] rounded-full"></div>
+            )}
+        </div>
+    );
 }
 
 const ChatWithAi = () => {
-  const [message, setMessage] = useState<string>("");
-  const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
-  const history = useNavigate();
-  const dispatch = useDispatch();
-  const chat = useSelector((state: RootState) => state.chat);
-  const [animation, setAnimation] = useState(false);
+    const [message, setMessage] = useState<string>("");
+    const user = useSelector((state: RootState) => state.user); // Assuming 'user' is your user slice name
+    const history = useNavigate();
+    const dispatch = useDispatch();
+    const chat = useSelector((state: RootState) => state.chat);
+    const [animation, setAnimation] = useState(false);
 
-  useEffect(() => {
-    if (!user.isLoading && !user.isAuth) {
-      // Redirect to login page
-      history("/login");
-    }
-    // console.log("gg", user.isAuth);
-    // console.log("ggs", user);
-  }, [user.isAuth, history, user.isLoading]);
+    useEffect(() => {
+        if (!user.isLoading && !user.isAuth) {
+            // Redirect to login page
+            history("/login");
+        }
+        // console.log("gg", user.isAuth);
+        // console.log("ggs", user);
+    }, [user.isAuth, history, user.isLoading]);
 
-  useEffect(() => {
-    if (user.email) {
-      axios.get(`http://localhost:5000/chat/${user.email}`).then((response) => {
-        const messages = response.data.data.messages;
+    useEffect(() => {
+        if (user.email) {
+            axios
+                .get(`http://localhost:5000/chat/${user.email}`)
+                .then((response) => {
+                    const messages = response.data.data.messages;
 
-        const data = messages.map((m) => {
-          const r = {
-            own: false,
-            message: "",
-          };
-          if (m.id[2] == "HumanMessage") r.own = true;
-          r.message = m.kwargs.content;
-          return r;
+                    const data = messages.map((m) => {
+                        const r = {
+                            own: false,
+                            message: "",
+                        };
+                        if (m.id[2] == "HumanMessage") r.own = true;
+                        r.message = m.kwargs.content;
+                        return r;
+                    });
+                    dispatch(getChat(data));
+                });
+        }
+    }, [user.isLoading]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [chat]);
+
+    function scrollToBottom() {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth", // Optional, adds smooth scrolling effect
         });
-        dispatch(getChat(data));
-      });
     }
-  }, []);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [chat]);
+    async function handleSubmit(e) {
+        setAnimation(true);
+        e.preventDefault();
+        dispatch(addHumanChat({ own: true, message }));
+        setMessage("");
 
-  function scrollToBottom() {
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth", // Optional, adds smooth scrolling effect
-    });
-  }
+        const requestData = {
+            sessionId: user.email,
+            message,
+        };
 
-  async function handleSubmit(e) {
-    setAnimation(true);
-    e.preventDefault();
-    dispatch(addHumanChat({ own: true, message }));
-    setMessage("");
+        const response = await fetch("http://localhost:5000/chat/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        });
 
-    const requestData = {
-      sessionId: user.email,
-      message,
-    };
+        const reader = response.body!.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let responseText = "";
 
-    const response = await fetch("http://localhost:5000/chat/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    });
+        while (true) {
+            const chunk = await reader.read();
+            const { done, value } = chunk;
+            if (done) {
+                break;
+            }
+            const decodedChunk = decoder.decode(value);
+            responseText += decodedChunk;
 
-    const reader = response.body!.getReader();
-    const decoder = new TextDecoder("utf-8");
-    let responseText = "";
+            dispatch(addAichat({ own: false, message: responseText }));
+        }
+        // Define a function to read chunks of data from the stream
 
-    while (true) {
-      const chunk = await reader.read();
-      const { done, value } = chunk;
-      if (done) {
-        break;
-      }
-      const decodedChunk = decoder.decode(value);
-      responseText += decodedChunk;
-
-      dispatch(addAichat({ own: false, message: responseText }));
+        // Start reading the stream
+        setAnimation(false);
     }
-    // Define a function to read chunks of data from the stream
 
-    // Start reading the stream
-    setAnimation(false);
-  }
-
-  return (
-    <div className="px-4 bg-zinc-100 flex-grow pagecont">
-      <div className="min-h-full  pb-20">
-        <div className=" mx-4">
-          {/*!chatInit && (
+    return (
+        <div className="px-4 bg-zinc-100 flex-grow pagecont">
+            <div className="min-h-full  pb-20">
+                <div className=" mx-4">
+                    {/*!chatInit && (
             <div>
             <LoaderRipple />
             </div>
           )*/}
-          {/*chatInit && chat.length === 0 && (
+                    {/*chatInit && chat.length === 0 && (
             <div className="flex justify-center items-center min-h-[calc(100vh-130px)]">
             <div>
             Having questions about Animals or Pets?
@@ -168,42 +170,42 @@ const ChatWithAi = () => {
                   </div>
                 </div>
               )*/}
-          {
-            /*chatInit &&
+                    {
+                        /*chatInit &&
                 chat &&*/
-            chat?.map((item, i) => (
-              <Chat
-                text={item.message}
-                isLoading={item.isLoading}
-                own={item.own}
-                imgLink={item.imgLink}
-                key={i}
-              />
-            ))
-          }
-          {animation && "freack"}
+                        chat?.map((item, i) => (
+                            <Chat
+                                text={item.message}
+                                isLoading={item.isLoading}
+                                own={item.own}
+                                imgLink={item.imgLink}
+                                key={i}
+                            />
+                        ))
+                    }
+                    {animation && "freack"}
+                </div>
+                <div className="fixed bottom-4 p-[6px] w-[calc(100%-16px*2)] bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
+                    <form onSubmit={handleSubmit} className="flex gap-[6px]">
+                        <input
+                            type="text"
+                            className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
+                            placeholder="Describe your problem ..."
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                        {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
+                        <Button
+                            type="submit"
+                            //   disabled={chatState === "busy" ? true : false}
+                        >
+                            <FiArrowRight />
+                        </Button>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div className="fixed bottom-4 p-[6px] w-[calc(100%-16px*2)] bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
-          <form onSubmit={handleSubmit} className="flex gap-[6px]">
-            <input
-              type="text"
-              className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
-              placeholder="Describe your problem ..."
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
-            <Button
-              type="submit"
-              //   disabled={chatState === "busy" ? true : false}
-            >
-              <FiArrowRight />
-            </Button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ChatWithAi;
