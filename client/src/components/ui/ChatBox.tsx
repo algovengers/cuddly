@@ -3,7 +3,6 @@ import sampleImg from '../../assets/main.jpeg';
 import FileMessageItem from './FileMessageItem';
 import MessageItem from './MessageItem';
 
-
 export default function ChatBox() {
   return (
     <div className="user-chats">
@@ -38,10 +37,10 @@ export default function ChatBox() {
                         <MessageItem isMyMessage={true}>Hi,How are you?</MessageItem>
                         <MessageItem>I'm fine</MessageItem>
                         <MessageItem isMyMessage={true}>I'm interseted in adopting you dog?</MessageItem>
-                        <MessageItem>that's Lorem ipsum dolor sit amet consectetur Lorem lorem100 ipsum dolor sit amet consectetur adipisicing elit. Facilis, excepturi accusamus quis dolorum magnam, nam maxime eos fugit officia aperiam deleniti officiis, architecto alias dolorem totam minima vero. Illo delectus asperiores repudiandae vel, eaque quod? adipisicing elit. Vel perferendis commodi doloribus quas at culpa provident fuga et cupiditate aliquid? great</MessageItem>
+                        <MessageItem>that's Lorem ipsum dolor sit amet consectetur Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis, excepturi accusamus quis dolorum magnam, nam maxime eos fugit officia aperiam deleniti officiis, architecto alias dolorem totam minima vero. Illo delectus asperiores repudiandae vel, eaque quod? adipisicing elit. Vel perferendis commodi doloribus quas at culpa provident fuga et cupiditate aliquid? great</MessageItem>
                         <MessageItem>let's meet</MessageItem>
-                        <FileMessageItem src={sampleImg} isMyMessage={true}/>
                         <FileMessageItem src={sampleImg}/>
+                        <FileMessageItem isMyMessage={true} src={sampleImg}/>
                     </ul>
                 </div>
                 <form className="sendMessageContainer">
@@ -53,20 +52,6 @@ export default function ChatBox() {
                     </label>
                     <input type="file" name="file" id="file" className='imageInput' />
                     </div>
-                    </header>
-                    <ul className="message-list">
-                    <li className="message-item user-message">Hi, how are you?</li>
-                    <li className="message-item user">hello</li>
-                    <li className="message-item user">I'm fine.</li>
-                    <li className="message-item user-message">I'm interseted in adoption you dog?</li>
-                    <li className="message-item user">that's great</li>
-                    <li className="message-item user">let's meet</li>
-
-
-                    </ul>
-                </div>
-                <form className="sendMessageContainer">
-                    <input type="text" className="messageInput" />
                     <button type="submit" className='send-button'><span className="material-symbols-outlined">send</span></button>
                 </form>
             </div>
