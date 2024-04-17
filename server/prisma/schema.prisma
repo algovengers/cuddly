@@ -44,3 +44,25 @@ enum Animal {
   dog
 }
 
+model Chat {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  users    ChatUser[] // One-to-many relationship with ChatUser
+  messages Message[] // One-to-many relationship with Message
+}
+
+model ChatUser {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  name   String
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId String @db.ObjectId
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId  String
+  message   String
+  timestamp DateTime @default(now())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String   @db.ObjectId
+}
