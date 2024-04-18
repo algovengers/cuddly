@@ -5,6 +5,7 @@ import FileMessageItem from "./FileMessageItem";
 import MessageItem from "./MessageItem";
 import { RootState } from "@/redux/store";
 import { adduserChatMessage, changeIndex } from "@/redux/userChatSlice";
+import { FormEvent } from "react";
 
 export default function ChatBox() {
     const userChatData = useSelector((state: RootState) => state.userChat);
@@ -65,11 +66,11 @@ function ChatBoxContainer() {
         (data) => data.userId != userData.email
     );
 
-    function handleInputChatSubmit(e: Event) {
+    function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const inputBox = (e.target as HTMLElement).querySelector(
             'input[type="text"]'
-        );
+        ) as HTMLInputElement;
         dispatch({ type: "userChat/sendMessage", payload: inputBox.value });
         inputBox.value = "";
     }
