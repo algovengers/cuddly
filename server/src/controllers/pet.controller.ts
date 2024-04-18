@@ -5,6 +5,8 @@ import { exclude, prisma } from "../utils/prisma";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import ApiResponse from "../utils/ApiResponse";
 import redisClient from "../utils/redis";
+import dotenv from "dotenv";
+dotenv.config();
 
 const pet_schema = z.object({
   color: z.string(),
@@ -147,7 +149,11 @@ const getPet = asyncHandler(async (req: Request, res: Response) => {
 async function storePetRedis(filteredPet: any) {
   const petKey = `cuddly_v1:${filteredPet.type}:${filteredPet.breed}:${filteredPet.personality}:${filteredPet.color}:${filteredPet.age}:${filteredPet.city}:${filteredPet.gender}:${filteredPet.weight}:${filteredPet.id}`;
 
-  redisClient.set(petKey, JSON.stringify(filteredPet));
+  redisClient.setex(
+    petKey,
+    Number(process.env.REDIS_DEF_EXP),
+    JSON.stringify(filteredPet)
+  );
 }
 
 function getIsCached() {
@@ -168,7 +174,11 @@ function getIsCached() {
 }
 
 function setIsCached() {
-  redisClient.set("cuddly_v1_cached", "true");
+  redisClient.setex(
+    "cuddly_v1_cached",
+    Number(process.env.REDIS_DEF_EXP),
+    "true"
+  );
 }
 
 function storeAllPetsRedis(data: any) {
@@ -178,7 +188,11 @@ function storeAllPetsRedis(data: any) {
     data.forEach((item: any) => {
       const petKey = `cuddly_v1:${item.type}:${item.breed}:${item.personality}:${item.color}:${item.age}:${item.city}:${item.gender}:${item.weight}:${item.id}`;
 
-      pipeline.set(petKey, JSON.stringify(item));
+      pipeline.setex(
+        petKey,
+        Number(process.env.REDIS_DEF_EXP),
+        JSON.stringify(item)
+      );
     });
 
     pipeline.exec((err: any, results: any) => {
