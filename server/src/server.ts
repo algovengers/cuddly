@@ -19,17 +19,17 @@ const app: Express = express();
 const server: http.Server = http.createServer(app);
 
 const client = new MongoClient(process.env.MONGO_URI || "", {
-    driverInfo: { name: "langchainjs" },
+  driverInfo: { name: "langchainjs" },
 });
 
 // use CORS
 app.use(
-    cors({
-        // origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
-        origin: true,
-        credentials: true,
-        exposedHeaders: ["set-cookie"],
-    })
+  cors({
+    // origin: ["http://127.0.0.1:3000", "http://localhost:3000"],
+    origin: true,
+    credentials: true,
+    exposedHeaders: ["set-cookie"],
+  })
 );
 // parse form data
 app.use(express.urlencoded({ extended: false }));
@@ -39,24 +39,24 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
-    res.send("Server Of Cuddly");
+  res.send("Server Of Cuddly");
 });
 
 app.post("/chat", (req, res, next) => {
-    req.client = client;
-    chatWithAi(req, res, next);
+  req.client = client;
+  chatWithAi(req, res, next);
 });
 
 app.get("/chat/:sessionId", (req, res, next) => {
-    req.client = client;
-    fetchChatMessage(req, res, next);
+  req.client = client;
+  fetchChatMessage(req, res, next);
 });
 
 // put routes
 app.use("/api", router);
 
 //use authenticated middleware
-// app.use(authenticateUser); //**************************** */
+app.use(authenticateUser); //**************************** */
 
 app.use("/api", authRouter);
 app.use("/api/userchat", userChatRouter);
@@ -66,19 +66,19 @@ app.use(ErrorMiddleware);
 
 initialize_socket_server(server);
 const startServer = async () => {
-    try {
-        // await connectDB();
+  try {
+    // await connectDB();
 
-        const port = String(process.env.SERVER_PORT) || 5000;
-        server.listen(port, () => {
-            console.log(`Cuddly-server is listening on port ${port} ...`);
-            client.connect().then(() => {
-                console.log("mongodb connected for the langchain");
-            });
-        });
-    } catch (err) {
-        console.log(err);
-    }
+    const port = String(process.env.SERVER_PORT) || 5000;
+    server.listen(port, () => {
+      console.log(`Cuddly-server is listening on port ${port} ...`);
+      client.connect().then(() => {
+        console.log("mongodb connected for the langchain");
+      });
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 startServer();
