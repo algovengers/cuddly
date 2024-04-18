@@ -278,9 +278,9 @@ function Upload() {
                     {tab == 1 && (
                         <div className="h-full flex flex-col justify-center p-8">
                             <div>
-                            
-                            <LoadingComponent />
-                            <div>Detecting with AI</div>
+
+                                <LoadingComponent />
+                                <div>Detecting with AI</div>
                             </div>
                         </div>
                     )}
