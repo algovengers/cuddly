@@ -11,7 +11,7 @@ import userChatRouter from "./routes/userChatRouter";
 import { authenticateUser } from "./middleware/auth";
 import { chatWithAi, fetchChatMessage } from "./controllers/chat.controller";
 import { MongoClient, ObjectId } from "mongodb";
-import { initialize_socket_server } from "../socket/index";
+import { initialize_socket_server } from "./socket/index";
 
 dotenv.config();
 
@@ -56,7 +56,7 @@ app.get("/chat/:sessionId", (req, res, next) => {
 app.use("/api", router);
 
 //use authenticated middleware
-app.use(authenticateUser); //**************************** */
+app.use(authenticateUser);
 
 app.use("/api", authRouter);
 app.use("/api/userchat", userChatRouter);
