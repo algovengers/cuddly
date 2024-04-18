@@ -56,6 +56,7 @@ initialize_socket_server(server);
 const startServer = async () => {
   try {
 
+
     const port = String(process.env.SERVER_PORT) || 5001;
 
     server.listen(port, () => {
