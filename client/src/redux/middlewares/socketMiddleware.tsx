@@ -5,8 +5,8 @@ import SocketClient from "@/socket/socketClient";
 export const socketMiddleware =
     (socket: SocketClient) =>
     ({ getState, dispatch }) =>
-    (next) =>
-    (action) => {
+    (next:any) =>
+    (action: any) => {
         switch (action.type) {
             // Connect to the socket when a user logs in
             case "socket/connect": {
@@ -54,14 +54,14 @@ export const socketMiddleware =
 
             // Telling the sever that this user is typing...
             case "users/sendThisUserIsTyping": {
-                socket.emit("typing...", payload);
+                socket.emit("typing...", action.payload);
 
                 break;
             }
 
             // Telling the server that this user stopped typing..
             case "users/sendThisUserStoppedTyping": {
-                socket.emit("stopped typing...", payload);
+                socket.emit("stopped typing...",action.payload);
 
                 return;
             }
@@ -74,7 +74,7 @@ export const socketMiddleware =
             }
             // Let the server be the source of truth for all messages; don't dispatch anything
             case "messages/sendMessage": {
-                socket.emit("send message", payload);
+                socket.emit("send message", action.payload);
 
                 return;
             }
