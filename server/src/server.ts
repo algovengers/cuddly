@@ -8,7 +8,6 @@ import router from "./routes/router";
 import authRouter from "./routes/authRouter";
 import userChatRouter from "./routes/userChatRouter";
 import { authenticateUser } from "./middleware/auth";
-import { chatWithAi, fetchChatMessage } from "./controllers/chat.controller";
 import { MongoClient, ObjectId } from "mongodb";
 import { initialize_socket_server } from "./socket/index";
 
@@ -41,16 +40,6 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Server Of Cuddly");
 });
 
-app.post("/chat", (req, res, next) => {
-  req.client = client;
-  chatWithAi(req, res, next);
-});
-
-app.get("/chat/:sessionId", (req, res, next) => {
-  req.client = client;
-  fetchChatMessage(req, res, next);
-});
-
 // put routes
 app.use("/api", router);
 
@@ -66,7 +55,10 @@ app.use(ErrorMiddleware);
 initialize_socket_server(server);
 const startServer = async () => {
   try {
-    const port = String(process.env.SERVER_PORT) || 5000;
+
+
+    const port = String(process.env.SERVER_PORT) || 5001;
+
     server.listen(port, () => {
       console.log(`Cuddly-server is listening on port ${port} ...`);
       client.connect().then(() => {
