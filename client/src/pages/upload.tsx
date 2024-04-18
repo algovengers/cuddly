@@ -144,6 +144,7 @@ function Upload() {
     const [showImage, setShowImage] = useState(null);
     const [name, setName] = useState("");
     const [data, setData] = useState<z.infer<typeof formSchema> | null>(null)
+
     const navigate = useNavigate()
     const onSumbit = (values: z.infer<typeof formSchema>) => {
         console.log(values)
@@ -436,7 +437,9 @@ function Upload() {
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>
+
                                                     <FormMessage />
+
                                                 </FormItem>
                                             }}
                                         />

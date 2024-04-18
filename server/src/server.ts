@@ -4,13 +4,12 @@ import http from "http";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import ErrorMiddleware from "./errorhandlers/ErrorMiddleware";
-// import connectDB from "./db/connect";
 import router from "./routes/router";
 import authRouter from "./routes/authRouter";
 import userChatRouter from "./routes/userChatRouter";
 import { authenticateUser } from "./middleware/auth";
 import { MongoClient, ObjectId } from "mongodb";
-import { initialize_socket_server } from "../socket/index";
+import { initialize_socket_server } from "./socket/index";
 
 dotenv.config();
 
@@ -45,7 +44,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api", router);
 
 //use authenticated middleware
-app.use(authenticateUser); //**************************** */
+app.use(authenticateUser);
 
 app.use("/api", authRouter);
 app.use("/api/userchat", userChatRouter);
@@ -56,9 +55,9 @@ app.use(ErrorMiddleware);
 initialize_socket_server(server);
 const startServer = async () => {
   try {
-    // await connectDB();
 
     const port = String(process.env.SERVER_PORT) || 5001;
+
     server.listen(port, () => {
       console.log(`Cuddly-server is listening on port ${port} ...`);
       client.connect().then(() => {
