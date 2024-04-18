@@ -10,63 +10,75 @@ import Home from "./pages/Home";
 import { useEffect } from "react";
 import axios from "axios";
 import { setLoading, setUser } from "./redux/user";
+import PetData from "./pages/PetData";
+
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />,
-  },
-  {
-    path: "/explore",
-    element: <Discover />,
-  },
-  {
-    path: "/upload",
-    element: <Upload />,
-  },
-  {
-    path: "/chatwithai",
-    element: <ChatWithAi />,
-    handle: () => {
-      console.log("hi");
+    {
+        path: "/",
+        element: <Home />,
     },
-  },
-  {
-    path: "/discover",
-    element: <Discover />,
-  },
+    {
+        path: "/login",
+        element: <LoginPage />,
+    },
+    {
+        path: "/signup",
+        element: <SignupPage />,
+    },
+    {
+        path: "/explore",
+        element: <Discover />,
+    },
+    {
+        path: "/upload",
+        element: <Upload />,
+    },
+    {
+        path: "/chatwithai",
+        element: <ChatWithAi />,
+        handle: () => {
+            console.log("hi");
+        },
+    },
+    {
+        path: "/pet/:id",
+        element: <PetData />,
+    },
+    {
+        path: "/discover",
+        element: <Discover />,
+    },
+    {
+        path: "/profile",
+        element: <Profile />,
+    },
 ]);
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_PATH}/api/isAuthenticated`, {
-        withCredentials: true,
-      })
-      .then((res: any) => {
-        console.log(res.data.data.emailId);
-        dispatch(
-          setUser({
-            name: res.data?.data?.name,
-            email: res.data?.data?.emailId,
-          })
-        );
-      })
-      .finally(() => {
-        dispatch(setLoading({ isLoading: false }));
-      });
-  }, []);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        axios
+            .get(`${import.meta.env.VITE_BACKEND_PATH}/api/isAuthenticated`, {
+                withCredentials: true,
+            })
+            .then((res: any) => {
+                console.log(res.data.data.emailId);
+                dispatch(
+                    setUser({
+                        name: res.data?.data?.name,
+                        email: res.data?.data?.emailId,
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setLoading({ isLoading: false }));
+            });
+    }, []);
 
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
+
 }
 
 export default App;
