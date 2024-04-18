@@ -16,7 +16,7 @@ import axios from "axios";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
@@ -28,14 +28,14 @@ import LoadingComponent from "@/components/LoadingComponent";
 // backend also
 
 const formSchema = z.object({
-    color: z.string(),
-    type: z.enum(["cat", "dog"]),
-    breed: z.string(), // can be enum
+    color: z.string().optional(),
+    type: z.enum(["cat", "dog"]).optional(),
+    breed: z.string().optional(), // can be enum
     gender: z.enum(["male", "female"]),
-    personality: z.string(),
-    city: z.string(),
+    personality: z.string().optional(),
+    city: z.string().optional(),
     weight: z.enum(["0-15", "15-30", "30-45", "45+"]),
-    age: z.string(),
+    age: z.coerce.number().min(0).max(10000),
 })
 
 type Form = z.infer<typeof formSchema>
@@ -129,8 +129,14 @@ function Upload() {
     }, [user.isAuth, history, user.isLoading]);
 
     type typeSchema = "cat" | "dog"
+    const [type, setType] = useState<"cat" | "dog" | null>(null)
+    const [breed, setBreed] = useState<string | null>(null)
+    const [color, setColor] = useState<string | null>(null)
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            age: 0,
+        }
     })
     const [tab, setTab] = useState(0);
     const [uploading, setUploading] = useState(false)
@@ -138,9 +144,6 @@ function Upload() {
     const [showImage, setShowImage] = useState(null);
     const [name, setName] = useState("");
     const [data, setData] = useState<z.infer<typeof formSchema> | null>(null)
-    const [type, setType] = useState<"cat" | "dog" | null>(null)
-    const [breed, setBreed] = useState<string | null>(null)
-    const [color, setColor] = useState<string | null>(null)
     const navigate = useNavigate()
     const onSumbit = (values: z.infer<typeof formSchema>) => {
         console.log(values)
@@ -153,7 +156,7 @@ function Upload() {
         setUploading(true)
         formData.append('name', name)
         for (const [key, value] of Object.entries(data!)) {
-            formData.append(key, value)
+            formData.append(key, value.toString())
         }
         formData.append('Image', selectedImage!)
         try {
@@ -293,7 +296,7 @@ function Upload() {
                                 <form onSubmit={form.handleSubmit(onSumbit)} className="flex flex-col gap-4">
                                     <div className="flex gap-16">
 
-                                        <FormField control={form.control} name="color"
+                                        <FormField control={form.control} name="color" defaultValue={color}
                                             render={({ field }: any) => {
                                                 return (
                                                     <FormItem>
@@ -313,11 +316,12 @@ function Upload() {
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }}
                                         />
-                                        <FormField control={form.control} name="type"
+                                        <FormField control={form.control} name="type" defaultValue={type}
                                             render={({ field }: any) => {
                                                 return (
                                                     <FormItem>
@@ -340,6 +344,7 @@ function Upload() {
                                                                 <SelectItem value="dog">Dog</SelectItem>
                                                             </SelectContent>
                                                         </Select>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }}
@@ -350,6 +355,7 @@ function Upload() {
 
                                         <FormField
                                             name="breed"
+                                            defaultValue={breed}
                                             control={form.control}
                                             render={({ field }) => {
                                                 return <FormItem>
@@ -390,6 +396,7 @@ function Upload() {
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>
+                                                    <FormMessage />
                                                 </FormItem>
                                             }} />
                                         <FormField
@@ -429,6 +436,7 @@ function Upload() {
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>
+                                                    <FormMessage />
                                                 </FormItem>
                                             }}
                                         />
@@ -479,12 +487,16 @@ function Upload() {
                                     <FormField
                                         name="age"
                                         control={form.control}
-                                        render={({ field }) => {
-                                            return <FormItem>
-                                                <Input type="number" {...field} placeholder="Enter the age of your pet" />
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input type="number" {...field} placeholder="Enter the age of your pet" />
+                                                </FormControl>
+                                                <FormMessage />
                                             </FormItem>
-                                        }}
+                                        )}
                                     />
+                                    {/* <FormMessage /> */}
                                     <div className="flex flex-row justify-end p-4">
                                         <div>
                                             <Button type="submit">Next</Button>
