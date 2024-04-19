@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./css/Upload.module.css";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +20,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
+import './upload.css';
 import LoadingComponent from "@/components/LoadingComponent";
 
 
@@ -79,7 +80,7 @@ const ImageUpload = ({
 
     return (
         <div className="h-full flex flex-col justify-center">
-            <div className="text-xl font-bold">Upload Image of Your Pet</div>
+            <div className="sm:text-xl font-bold">Upload Image of Your Pet</div>
             <input
                 type="file"
                 accept="image/*"
@@ -207,13 +208,13 @@ function Upload() {
 
     return (
         <>
-            <div className="grid grid-cols-5 w-full h-screen">
+            <div className="grid sm:grid-cols-5 grid-cols-1 w-full h-screen upload-page-container">
                 <div
-                    className="col-span-2 h-full flex flex-col justify-center gap-4 pb-60"
+                    className="col-span-2 h-full flex flex-col justify-center gap-4 sm:pb-60 pb-16 progress-list-container"
                     style={{ background: "#F2DF7D" }}
                 >
                     <div className={styles.leftColumn}>
-                        <div className="flex flex-col gap-10 fixed">
+                        <div className="flex flex-col gap-10 sm:fixed progress-list">
                             <div className="flex flex-row gap-2 items-center text-lg">
                                 <div className={styles.wrapper}>
                                     <div
@@ -221,7 +222,7 @@ function Upload() {
                                             } ${styles.circle}`}
                                     ></div>
                                 </div>
-                                <div className={`${tab === 0 ? "text-3xl" : ""}`}>
+                                <div className={`${tab === 0 ? "md:text-3xl text-lg font-medium" : ""} `}>
                                     Upload a Picture
                                 </div>
                             </div>
@@ -261,7 +262,7 @@ function Upload() {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-3 h-screen">
+                <div className="col-span-3 lg:h-screen  h-full">
                     {tab == 0 && (
                         <div className="h-full flex flex-col justify-center p-8">
                             <ImageUpload
@@ -290,12 +291,12 @@ function Upload() {
                     )}
                     {tab == 2 && (
                         <div className="flex flex-col gap-8 h-full items-center justify-center">
-                            <div className="text-4xl">
+                            <div className="lg:text-4xl text-xl">
                                 Confirm your pet details
                             </div>
                             <Form {...form}>
                                 <form onSubmit={form.handleSubmit(onSumbit)} className="flex flex-col gap-4">
-                                    <div className="flex gap-16">
+                                    <div className="flex sm:gap-16 gap-4">
 
                                         <FormField control={form.control} name="color" defaultValue={color}
                                             render={({ field }: any) => {
@@ -352,7 +353,7 @@ function Upload() {
 
                                         />
                                     </div>
-                                    <div className="flex gap-16">
+                                    <div className="flex sm:gap-16 gap-4">
 
                                         <FormField
                                             name="breed"
@@ -415,7 +416,7 @@ function Upload() {
                                             }}
                                         />
                                     </div>
-                                    <div className="flex gap-16">
+                                    <div className="flex sm:gap-16 gap-4">
 
                                         <FormField
                                             name="personality"
