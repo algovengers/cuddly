@@ -16,11 +16,12 @@ import axios from "axios";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
 import './upload.css';
+import LoadingComponent from "@/components/LoadingComponent";
 
 
 // The schema is same as the schema at the backend except name field
@@ -28,14 +29,14 @@ import './upload.css';
 // backend also
 
 const formSchema = z.object({
-    color: z.string(),
-    type: z.enum(["cat", "dog"]),
-    breed: z.string(), // can be enum
+    color: z.string().optional(),
+    type: z.enum(["cat", "dog"]).optional(),
+    breed: z.string().optional(), // can be enum
     gender: z.enum(["male", "female"]),
-    personality: z.string(),
-    city: z.string(),
+    personality: z.string().optional(),
+    city: z.string().optional(),
     weight: z.enum(["0-15", "15-30", "30-45", "45+"]),
-    age: z.string(),
+    age: z.coerce.number().min(0).max(10000),
 })
 
 type Form = z.infer<typeof formSchema>
@@ -129,16 +130,22 @@ function Upload() {
     }, [user.isAuth, history, user.isLoading]);
 
     type typeSchema = "cat" | "dog"
+    const [type, setType] = useState<"cat" | "dog" | null>(null)
+    const [breed, setBreed] = useState<string | null>(null)
+    const [color, setColor] = useState<string | null>(null)
     const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema)
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            age: 0,
+        }
     })
     const [tab, setTab] = useState(0);
-    const [uploading,setUploading] = useState(false)
+    const [uploading, setUploading] = useState(false)
     const [selectedImage, setSelectedImage] = useState(null);
     const [showImage, setShowImage] = useState(null);
     const [name, setName] = useState("");
     const [data, setData] = useState<z.infer<typeof formSchema> | null>(null)
-    const [type,setType] = useState<"cat" | "dog" | null>(null)
+
     const navigate = useNavigate()
     const onSumbit = (values: z.infer<typeof formSchema>) => {
         console.log(values)
@@ -151,7 +158,7 @@ function Upload() {
         setUploading(true)
         formData.append('name', name)
         for (const [key, value] of Object.entries(data!)) {
-            formData.append(key, value)
+            formData.append(key, value.toString())
         }
         formData.append('Image', selectedImage!)
         try {
@@ -169,11 +176,33 @@ function Upload() {
                 console.log(error.message);
             setUploading(false)
         }
-        
+
+    }
+    async function handleAIdetection() {
+        try {
+            const formData = new FormData()
+            formData.append('Image', selectedImage!)
+            const data = await axios.post(import.meta.env.VITE_BACKEND_PATH + "/api/detect",
+                formData, {
+                withCredentials: true
+            }
+            )
+            const values = data.data.data.text
+            console.log(values)
+            setType(values.type)
+            setBreed(values.breed)
+            setColor(values.color)
+            setTab((prev) => prev + 1)
+
+
+        } catch (error) {
+
+        }
     }
     useEffect(() => {
         if (tab == 1) {
             //Call AI API here
+            handleAIdetection()
         }
     }, [tab]);
 
@@ -245,7 +274,7 @@ function Upload() {
                             <div className="flex flex-row justify-end p-4">
                                 <div>
                                     {
-                                        showImage !== null && <Button onClick={() => setTab(2)}>Upload</Button>
+                                        showImage !== null && <Button onClick={() => setTab(1)}>Upload</Button>
                                     }
                                 </div>
                             </div>
@@ -253,7 +282,11 @@ function Upload() {
                     )}
                     {tab == 1 && (
                         <div className="h-full flex flex-col justify-center p-8">
-                            Detecting with AI
+                            <div>
+
+                                <LoadingComponent />
+                                <div>Detecting with AI</div>
+                            </div>
                         </div>
                     )}
                     {tab == 2 && (
@@ -265,11 +298,11 @@ function Upload() {
                                 <form onSubmit={form.handleSubmit(onSumbit)} className="flex flex-col gap-4">
                                     <div className="flex sm:gap-16 gap-4">
 
-                                        <FormField control={form.control} name="color"
+                                        <FormField control={form.control} name="color" defaultValue={color}
                                             render={({ field }: any) => {
                                                 return (
                                                     <FormItem>
-                                                        <Select onValueChange={field.onChange}>
+                                                        <Select onValueChange={field.onChange} defaultValue={color}>
                                                             <FormControl>
                                                                 <SelectTrigger className="w-[180px]">
                                                                     <SelectValue placeholder="Choose the color" />
@@ -285,18 +318,22 @@ function Upload() {
                                                                 </SelectGroup>
                                                             </SelectContent>
                                                         </Select>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }}
                                         />
-                                        <FormField control={form.control} name="type"
+                                        <FormField control={form.control} name="type" defaultValue={type}
                                             render={({ field }: any) => {
                                                 return (
                                                     <FormItem>
-                                                        <Select onValueChange={(e)=>{
-                                                            field.onChange(e) 
+                                                        <Select onValueChange={(e) => {
+                                                            field.onChange(e)
                                                             setType(e as typeSchema)
-                                                            console.log(e)}}>
+                                                            console.log(e)
+                                                        }}
+                                                            defaultValue={type}
+                                                        >
                                                             <FormControl>
                                                                 <SelectTrigger className="w-[180px]">
                                                                     <SelectValue
@@ -309,6 +346,7 @@ function Upload() {
                                                                 <SelectItem value="dog">Dog</SelectItem>
                                                             </SelectContent>
                                                         </Select>
+                                                        <FormMessage />
                                                     </FormItem>
                                                 )
                                             }}
@@ -319,10 +357,13 @@ function Upload() {
 
                                         <FormField
                                             name="breed"
+                                            defaultValue={breed}
                                             control={form.control}
                                             render={({ field }) => {
                                                 return <FormItem>
-                                                    <Select onValueChange={field.onChange}>
+                                                    <Select onValueChange={field.onChange}
+                                                        defaultValue={breed}
+                                                    >
                                                         <FormControl>
                                                             <SelectTrigger className="w-[180px]">
                                                                 <SelectValue placeholder="Select the Breed" />
@@ -330,33 +371,34 @@ function Upload() {
                                                         </FormControl>
                                                         <SelectContent>
                                                             <SelectGroup>
-                                                                { type === "cat" && 
-                                                                <>
-                                                                <SelectItem value="ragdoll">Ragdoll</SelectItem>
-                                                                <SelectItem value="maine-coon">Maine Coon</SelectItem>
-                                                                <SelectItem value="shorthair">Shorthair</SelectItem>
-                                                                <SelectItem value="persian">Persian Cats</SelectItem>
-                                                                <SelectItem value="siberian">Siberian</SelectItem>
-                                                                <SelectItem value="others">Others</SelectItem>
-                                                                
-                                                                </>
-                                           
+                                                                {type === "cat" &&
+                                                                    <>
+                                                                        <SelectItem value="ragdoll">Ragdoll</SelectItem>
+                                                                        <SelectItem value="maine-coon">Maine Coon</SelectItem>
+                                                                        <SelectItem value="shorthair">Shorthair</SelectItem>
+                                                                        <SelectItem value="persian">Persian Cats</SelectItem>
+                                                                        <SelectItem value="siberian">Siberian</SelectItem>
+                                                                        <SelectItem value="others">Others</SelectItem>
+
+                                                                    </>
+
                                                                 }
-                                                            { type === "dog" && 
-                                                                <>
-                                                                <SelectItem value="bulldog">BullDog</SelectItem>
-                                                                <SelectItem value="labrador">Labrador</SelectItem>
-                                                                <SelectItem value="german-shepherd">German shepherd</SelectItem>
-                                                                <SelectItem value="rottweiler">Rottweiler</SelectItem>
-                                                                <SelectItem value="golden-retriever">Golden Retriever</SelectItem>
-                                                                <SelectItem value="others">Others</SelectItem>
-                                                                
-                                                                </>
-                                           
+                                                                {type === "dog" &&
+                                                                    <>
+                                                                        <SelectItem value="bulldog">BullDog</SelectItem>
+                                                                        <SelectItem value="labrador">Labrador</SelectItem>
+                                                                        <SelectItem value="german-shepherd">German shepherd</SelectItem>
+                                                                        <SelectItem value="rottweiler">Rottweiler</SelectItem>
+                                                                        <SelectItem value="golden-retriever">Golden Retriever</SelectItem>
+                                                                        <SelectItem value="others">Others</SelectItem>
+
+                                                                    </>
+
                                                                 }
                                                             </SelectGroup>
                                                         </SelectContent>
                                                     </Select>
+                                                    <FormMessage />
                                                 </FormItem>
                                             }} />
                                         <FormField
@@ -376,55 +418,58 @@ function Upload() {
                                     </div>
                                     <div className="flex sm:gap-16 gap-4">
 
-                                    <FormField
-                                        name="personality"
-                                        control={form.control}
-                                        render={({ field }) => {
-                                            return <FormItem>
-                                                <Select onValueChange={field.onChange}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="w-[180px]">
-                                                            <SelectValue placeholder="Select the Personality" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        <SelectGroup>
-                                                            <SelectItem value="angry">Angry</SelectItem>
-                                                            <SelectItem value="cute">Cute</SelectItem>
-                                                            <SelectItem value="lazy">Lazy</SelectItem>
-                                                            <SelectItem value="others">Others</SelectItem>
-                                                        </SelectGroup>
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormItem>
-                                        }}
-                                    />
-                                    <FormField
-                                        name="city"
-                                        control={form.control}
-                                        render={({ field }) => {
-                                            return <FormItem>
-                                                <Select onValueChange={field.onChange}>
-                                                    <FormControl>
-                                                        <SelectTrigger className="w-[180px]">
-                                                            <SelectValue placeholder="Select the city" />
-                                                        </SelectTrigger>
-                                                    </FormControl>
-                                                    <SelectContent>
-                                                        <SelectGroup>
-                                                            <SelectItem value="kolkata">Kolkata</SelectItem>
-                                                            <SelectItem value="mumbai">Mumbai</SelectItem>
-                                                            <SelectItem value="banglore">Banglore</SelectItem>
-                                                            <SelectItem value="noida">Noida</SelectItem>
-                                                            <SelectItem value="others">Others</SelectItem>
+                                        <FormField
+                                            name="personality"
+                                            control={form.control}
+                                            render={({ field }) => {
+                                                return <FormItem>
+                                                    <Select onValueChange={field.onChange}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="w-[180px]">
+                                                                <SelectValue placeholder="Select the Personality" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectGroup>
+                                                                <SelectItem value="angry">Angry</SelectItem>
+                                                                <SelectItem value="cute">Cute</SelectItem>
+                                                                <SelectItem value="lazy">Lazy</SelectItem>
+                                                                <SelectItem value="others">Others</SelectItem>
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
 
-                                                        </SelectGroup>
-                                                    </SelectContent>
-                                                </Select>
-                                            </FormItem>
-                                        }}
+                                                    <FormMessage />
+
+                                                </FormItem>
+                                            }}
                                         />
-                                        </div>
+                                        <FormField
+                                            name="city"
+                                            control={form.control}
+                                            render={({ field }) => {
+                                                return <FormItem>
+                                                    <Select onValueChange={field.onChange}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="w-[180px]">
+                                                                <SelectValue placeholder="Select the city" />
+                                                            </SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectGroup>
+                                                                <SelectItem value="kolkata">Kolkata</SelectItem>
+                                                                <SelectItem value="mumbai">Mumbai</SelectItem>
+                                                                <SelectItem value="banglore">Banglore</SelectItem>
+                                                                <SelectItem value="noida">Noida</SelectItem>
+                                                                <SelectItem value="others">Others</SelectItem>
+
+                                                            </SelectGroup>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </FormItem>
+                                            }}
+                                        />
+                                    </div>
                                     <FormField
                                         name="weight"
                                         control={form.control}
@@ -446,12 +491,16 @@ function Upload() {
                                     <FormField
                                         name="age"
                                         control={form.control}
-                                        render={({ field }) => {
-                                            return <FormItem>
-                                                <Input type="number" {...field} />
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormControl>
+                                                    <Input type="number" {...field} placeholder="Enter the age of your pet" />
+                                                </FormControl>
+                                                <FormMessage />
                                             </FormItem>
-                                        }}
+                                        )}
                                     />
+                                    {/* <FormMessage /> */}
                                     <div className="flex flex-row justify-end p-4">
                                         <div>
                                             <Button type="submit">Next</Button>
@@ -471,11 +520,11 @@ function Upload() {
 
                             <div className="flex flex-row justify-end p-4">
                                 <div>
-                                    {uploading === false && 
-                                    <Button onClick={UploadImage}>Upload</Button>
+                                    {uploading === false &&
+                                        <Button onClick={UploadImage}>Upload</Button>
                                     }
                                     {
-                                        uploading ==true &&
+                                        uploading == true &&
                                         <Button disabled >Uploading</Button>
                                     }
                                 </div>

@@ -11,7 +11,7 @@ export const userChatMiddleware: Middleware =
                 if (userData.email) {
                     try {
                         const response = await axios.post(
-                            "http://localhost:5000/api/userchat/getchats",
+                            "http://localhost:5001/api/userchat/getchats",
                             { userId: userData.email },
                             { withCredentials: true }
                         );
@@ -30,7 +30,7 @@ export const userChatMiddleware: Middleware =
                     const interData = userChatData.chats[index].users;
 
                     const response = await axios.post(
-                        "http://localhost:5000/api/userchat/getmessages",
+                        "http://localhost:5001/api/userchat/getmessages",
                         {
                             userId1: interData[0].userId,
                             userId2: interData[1].userId,
@@ -65,7 +65,7 @@ export const userChatMiddleware: Middleware =
                     const interData =
                         userChatData.chats[userChatData.index].users;
                     const response = await axios.post(
-                        "http://localhost:5000/api/userchat/sendmessage",
+                        "http://localhost:5001/api/userchat/sendmessage",
                         {
                             userId1: interData[0].userId,
                             userId2: interData[1].userId,
