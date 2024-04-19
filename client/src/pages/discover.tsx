@@ -705,7 +705,7 @@ function Discover() {
                       </SheetHeader>
                       <SheetFooter>
                       <SheetTrigger>
-                          <Button onClick={handleClearFilters}>Clear Filters</Button>
+                          <Button type="reset" onClick={handleClearFilters}>Clear Filters</Button>
                         </SheetTrigger>
                         <SheetTrigger>
                           <Button type="submit">Apply Filters</Button>
