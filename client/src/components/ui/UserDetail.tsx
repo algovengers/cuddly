@@ -1,11 +1,14 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-export default function UserDetail() {
+export default function UserDetail({setShowSidebar,showSidebar}) {
     const userData = useSelector((state: RootState) => state.user);
     return (
         <div className="user-details">
+            <div className="user-detail-header">
+            <span className="material-symbols-outlined menu-btn" onClick={()=>setShowSidebar(!showSidebar)}>menu</span>
             <h1 className="userDetailsTitle">My Account</h1>
+            </div>
             <ul className="user-detail-container">
                 <li className="user-detail-element">
                     <span className="detail-title">Name:</span>
@@ -19,7 +22,7 @@ export default function UserDetail() {
                     <span className="detail-title">Email:</span>
                     <span className="detail-value">{userData.email}</span>
                 </li>
-                {/* <li className="user-detail-element"><span className="detail-title">Username:</span><span className='detail-value'>newuserofcuddly</span></li> */}
+                <li className="user-detail-element"><span className="detail-title">Username:</span><span className='detail-value'>newuserofcuddly</span></li>
             </ul>
         </div>
     );
