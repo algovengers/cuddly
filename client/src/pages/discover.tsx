@@ -725,6 +725,7 @@ function Discover() {
                       image={res.Image}
                       gender={res.gender}
                       location={res.city}
+                      breed={res.breed}
                       />
                       </Link>
                   </div>

@@ -40,6 +40,7 @@ button {
   font-size: 2rem;
   transition: color 0.3s;
 }
+
 .navbut.open {
   color: black;
 }
@@ -232,6 +233,7 @@ button {
   .home-header {
     padding-inline: 15px;
   }
+
   .navbut {
     display: block;
   }
@@ -242,15 +244,19 @@ button {
     flex-direction: column;
     gap: 4rem;
   }
+
   .text-section {
     width: 100%;
   }
+
   .top-section-main-text {
     font-size: 25px;
   }
+
   .section-image-container {
     width: 100%;
   }
+
   .nav {
     opacity: 0;
     display: block;
@@ -264,32 +270,38 @@ button {
     flex-direction: column;
     /* background-image: linear-gradient(180deg, #ffebc4, #fd9); */
     /* background-color: #ffebc4; */
-    background-color: #eeeeeee1;
+    background-color: #ffffff;
     backdrop-filter: blur(15px);
     box-shadow: rgba(0, 0, 0, 0.4) -3px 0px 7px;
     transform: translateX(100%);
     padding: 40px;
     transition: transform 0.3s, opacity 0.3s;
   }
+
   .nav.open {
     transform: translateX(0%);
     opacity: 1;
   }
+
   .nav-item {
     margin: 20px 0 20px 0;
   }
+
   .nav-link {
     color: black;
     font-size: 1.3rem;
   }
+
   .nav .login-btn {
     color: black;
     font-size: 1.3rem;
     width: auto;
   }
+
   .steps-container {
     flex-direction: column;
   }
+
   .footer {
     flex-direction: column;
     align-items: flex-start;
