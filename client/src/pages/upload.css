@@ -1,0 +1,9 @@
+@media screen and (max-width: 750px) {
+    .progress-list-container {
+        order: 2;
+    }
+
+    .upload-page-container {
+        grid-template-columns: 1fr;
+    }
+}
