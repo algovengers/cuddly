@@ -89,7 +89,7 @@ const explorePets = asyncHandler(async (req: Request, res: Response) => {
         age: query["age"], // need to talk to afeef or rohit !rem
         breed: query["breed"],
         city: query["city"],
-        color: color?.at(0), // need to talk to afeef or rohit !rem
+        color: color, // need to talk to afeef or rohit !rem
         gender: query["gender"],
         personality: query["personality"],
         type: query["type"], // need to talk to afeef or rohit !rem
@@ -209,6 +209,29 @@ function storeAllPetsRedis(data: any) {
 
 function getPetsRedis(filters: any) {
   // console.log("filters", filters);
+  return new Promise(async (resolve: any, reject: any) => {
+    try {
+      let allValues: Array<any> = [];
+      if (filters.color && filters.color?.length !== 0) {
+        for (const eachColor of filters.color) {
+          allValues = allValues.concat(
+            await getPetsForEachColor({ ...filters, color: eachColor })
+          );
+        }
+      } else {
+        allValues = allValues.concat(
+          await getPetsForEachColor({ ...filters, color: "*" })
+        );
+      }
+      // console.log("aalval", allValues);
+      resolve(allValues);
+    } catch (err) {
+      reject(err);
+    }
+  });
+}
+
+function getPetsForEachColor(filters: any) {
   return new Promise((resolve: any, reject: any) => {
     const petKey = `cuddly_v1:${filters.type || "*"}:${filters.breed || "*"}:${
       filters.personality || "*"
