@@ -1,13 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import fs from 'fs'
+import fs from "fs";
 import ApiResponse from "../utils/ApiResponse";
 
-console.log(String(process.env.GEMINI_API_KEY))
+console.log(String(process.env.GEMINI_API_KEY));
 const genAI = new GoogleGenerativeAI(String(process.env.GEMINI_API_KEY));
 
-const model = genAI.getGenerativeModel({ model: "gemini-pro-vision"});
+const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
 const prompt = `
     You are a pet detection model and you detect the features of the pet
@@ -21,33 +21,31 @@ const prompt = `
     }
     Try to find the answer of everything precisely and always as much as possible
     In worst case if you dont know the answer of any field return that field as null
-`
+    `;
 
-function fileToGenerativePart(path: any, mimeType:any) {
+function fileToGenerativePart(path: any, mimeType: any) {
     return {
-      inlineData: {
-        data: Buffer.from(fs.readFileSync(path)).toString("base64"),
-        mimeType
-      },
+        inlineData: {
+            data: Buffer.from(fs.readFileSync(path)).toString("base64"),
+            mimeType,
+        },
     };
-  }
-  
+}
 
-const detectImage = asyncHandler(async(req:Request,res: Response)=>{
-    console.log("hi")
+const detectImage = asyncHandler(async (req: Request, res: Response) => {
+    console.log("hi");
     const imagePath = req.file!.path;
     const imageParts = [
-        fileToGenerativePart(imagePath,"image/png"),
-        fileToGenerativePart(imagePath,"image/jpeg"),
-        fileToGenerativePart(imagePath,"image/webp")
-
-    ]
-    fs.unlinkSync(imagePath)
+        fileToGenerativePart(imagePath, "image/png"),
+        fileToGenerativePart(imagePath, "image/jpeg"),
+        fileToGenerativePart(imagePath, "image/webp"),
+    ];
+    fs.unlinkSync(imagePath);
     const result = await model.generateContent([prompt, ...imageParts]);
-    const response =  result.response;
+    const response = result.response;
     const text = JSON.parse(response.text());
     console.log(text);
-    res.status(200).json(new ApiResponse(200,{text}))
-})
+    res.status(200).json(new ApiResponse(200, { text }));
+});
 
-export {detectImage}
+export { detectImage };

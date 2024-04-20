@@ -5,7 +5,7 @@ import FileMessageItem from "./FileMessageItem";
 import MessageItem from "./MessageItem";
 import { RootState } from "@/redux/store";
 import { adduserChatMessage, changeIndex } from "@/redux/userChatSlice";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useReducer, useRef } from "react";
 
 export default function ChatBox() {
     const userChatData = useSelector((state: RootState) => state.userChat);
@@ -65,6 +65,17 @@ function ChatBoxContainer() {
     const otherUserId = userChatData.users.find(
         (data) => data.userId != userData.email
     );
+    const chatBoxRef = useRef(null);
+
+    function scrollToBottom(elementRef: React.RefObject<HTMLDivElement>) {
+        if (elementRef.current) {
+            elementRef.current.scrollTop = elementRef.current.scrollHeight;
+        }
+    }
+
+    useEffect(() => {
+        scrollToBottom(chatBoxRef);
+    }, [userChatData]);
 
     function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -101,7 +112,7 @@ function ChatBoxContainer() {
                             </button>
                         </div>
                     </header>
-                    <ul className="message-list">
+                    <ul className="message-list" ref={chatBoxRef}>
                         {/* <MessageItem isMyMessage={true}>
                             Hi,How are you?
                         </MessageItem>

@@ -62,8 +62,23 @@ export const userChatMiddleware: Middleware =
                             id: Date.now(),
                         })
                     );
+
+                    //then send to other user also
                     const interData =
                         userChatData.chats[userChatData.index].users;
+
+                    const otherUser = interData.find(
+                        (d) => d.userId !== userData.email
+                    );
+                    // console.log(otherUser);
+                    store.dispatch({
+                        type: "messages/sendMessage",
+                        payload: {
+                            message: (action as any).payload,
+                            userId: otherUser.userId,
+                        },
+                    });
+
                     const response = await axios.post(
                         "http://localhost:5001/api/userchat/sendmessage",
                         {
@@ -89,7 +104,7 @@ export const userChatMiddleware: Middleware =
                             index: userChatData.index,
                         })
                     );
-                    console.log(response);
+                    // console.log(response);
                     // now send the optimistic update
                     // and socket emit
                 } catch (error) {

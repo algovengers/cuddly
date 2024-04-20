@@ -19,6 +19,11 @@ function Profile() {
         dispatch({
             type: "socket/connect",
         });
+        return () => {
+            dispatch({
+                type: "socket/disconnect",
+            });
+        };
     }, [userData.email]);
     return (
         <div className="profile-container">
@@ -31,7 +36,7 @@ function Profile() {
                             className="profile-pic"
                         />
                     </div>
-                    <span className="user-name">John Smith</span>
+                    <span className="user-name">{userData.name}</span>
                 </div>
                 <ul className="side-nav">
                     <li
