@@ -101,11 +101,11 @@ export const socketMiddleware =
             // Disconnect from the socket when a user logs out
 
             // Let the server be the source of truth for all messages; don't dispatch anything
-            case "messages/sendMessage": {
-                socket.emit("send message", action.payload);
+            // case "messages/sendMessage": {
+            //     socket.emit("send message", action.payload);
 
-                return;
-            }
+            //     return;
+            // }
             default:
                 next(action);
         }

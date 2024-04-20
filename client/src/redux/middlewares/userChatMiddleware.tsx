@@ -11,7 +11,9 @@ export const userChatMiddleware: Middleware =
                 if (userData.email) {
                     try {
                         const response = await axios.post(
-                            "http://localhost:5001/api/userchat/getchats",
+                            `${
+                                import.meta.env.VITE_BACKEND_PATH
+                            }/api/userchat/getchats`,
                             { userId: userData.email },
                             { withCredentials: true }
                         );
@@ -30,7 +32,9 @@ export const userChatMiddleware: Middleware =
                     const interData = userChatData.chats[index].users;
 
                     const response = await axios.post(
-                        "http://localhost:5001/api/userchat/getmessages",
+                        `${
+                            import.meta.env.VITE_BACKEND_PATH
+                        }/api/userchat/getmessages`,
                         {
                             userId1: interData[0].userId,
                             userId2: interData[1].userId,
@@ -80,7 +84,9 @@ export const userChatMiddleware: Middleware =
                     });
 
                     const response = await axios.post(
-                        "http://localhost:5001/api/userchat/sendmessage",
+                        `${
+                            import.meta.env.VITE_BACKEND_PATH
+                        }/api/userchat/sendmessage`,
                         {
                             userId1: interData[0].userId,
                             userId2: interData[1].userId,
