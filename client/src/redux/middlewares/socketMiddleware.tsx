@@ -1,7 +1,6 @@
-import { Socket } from "dgram";
-import { addOnlineUser } from "../socketSlice";
 import SocketClient from "@/socket/socketClient";
 import { adduserChatMessage } from "../userChatSlice";
+import { RootState } from "@/redux/store";
 
 export const socketMiddleware =
     (socket: SocketClient) =>
@@ -25,7 +24,7 @@ export const socketMiddleware =
                     email: (getState() as RootState).user.email,
                 });
 
-                socket.on("message receive", (data) => {
+                socket.on("message receive", (data: any) => {
                     // console.log(data);
                     dispatch(
                         adduserChatMessage({
@@ -102,11 +101,11 @@ export const socketMiddleware =
             // Disconnect from the socket when a user logs out
 
             // Let the server be the source of truth for all messages; don't dispatch anything
-            case "messages/sendMessage": {
-                socket.emit("send message", action.payload);
+            // case "messages/sendMessage": {
+            //     socket.emit("send message", action.payload);
 
-                return;
-            }
+            //     return;
+            // }
             default:
                 next(action);
         }

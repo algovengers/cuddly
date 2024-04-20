@@ -1,6 +1,6 @@
 import { io, Socket } from "socket.io-client";
 
-import { WEB_SOCKET_HOST } from "../utils/socketConfig";
+// import { WEB_SOCKET_HOST } from "../utils/socketConfig";
 
 // A little API for the stateful socket connection, just to keep it out of the global
 // namespace and away from the socket middleware
@@ -8,7 +8,7 @@ export default class SocketClient {
     socket: Socket | null;
 
     connect() {
-        this.socket = io(WEB_SOCKET_HOST);
+        this.socket = io(import.meta.env.VITE_WEB_SOCKET_HOST);
     }
 
     disconnect() {
@@ -24,7 +24,7 @@ export default class SocketClient {
         }
     }
 
-    on(eventName: string, func: () => void) {
+    on(eventName: string, func: (data?: any) => void) {
         if (this.socket) {
             this.socket.on(eventName, func);
         }
