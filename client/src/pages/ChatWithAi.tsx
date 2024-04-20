@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { getChat, addHumanChat, addAichat } from "@/redux/chatSlice";
 import axios from "axios";
 import LoadingComponent from "@/components/LoadingComponent";
+import Navbar from "@/components/Navbar";
 
 interface ChatMessage {
   text: string;
@@ -148,7 +149,9 @@ const ChatWithAi = () => {
   }
 
   return (
-    <div className="px-4 bg-zinc-100 flex-grow pagecont min-h-screen">
+    <div className="bg-zinc-100 h-screen">
+      <Navbar />
+    <div className="px-4 bg-zinc-100 flex-grow pagecont  ">
       <div className="min-h-full  pb-20">
         <div className=" mx-4">
           {/*!chatInit && (
@@ -160,21 +163,21 @@ const ChatWithAi = () => {
             <div className="flex justify-center items-center min-h-[calc(100vh-130px)]">
             <div>
             Having questions about Animals or Pets?
-                    <br />
-                    Chat with me now.
-                  </div>
-                </div>
-              )*/}
+            <br />
+            Chat with me now.
+            </div>
+            </div>
+          )*/}
           {
             /*chatInit &&
-                chat &&*/
+            chat &&*/
             chat?.map((item, i) => (
               <Chat
-                text={item.message}
-                isLoading={item.isLoading}
-                own={item.own}
-                imgLink={item.imgLink}
-                key={i}
+              text={item.message}
+              isLoading={item.isLoading}
+              own={item.own}
+              imgLink={item.imgLink}
+              key={i}
               />
             ))
           }
@@ -192,18 +195,19 @@ const ChatWithAi = () => {
               placeholder="Describe your problem ..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-            />
+              />
             {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
             <Button
               type="submit"
               //   disabled={chatState === "busy" ? true : false}
-            >
+              >
               <FiArrowRight />
             </Button>
           </form>
         </div>
       </div>
     </div>
+              </div>
   );
 };
 

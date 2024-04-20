@@ -35,6 +35,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Link, useSearchParams } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 
 const filter_schema = z.object({
   color: z.array(z.string()).optional(),
@@ -89,7 +90,10 @@ function Discover() {
     setSearchParams({})
   }
   return (
-    <div className="flex h-full w-full justify-center">
+    <>
+
+    <Navbar  />
+    <div className="flex h-full w-full justify-center z-10">
       <div className="max-w-7xl w-full p-4">
         <div className="w-full text-center">
           <div className="text-3xl my-8">
@@ -97,12 +101,12 @@ function Discover() {
           </div>
 
           <div className="flex justify-between">
-            <div>
+            <div className="">
               <Sheet>
                 <SheetTrigger>
                   <Button variant="outline">Filters</Button>
                 </SheetTrigger>
-                <SheetContent side={"left"}>
+                <SheetContent side={"left"} className="z-[2000]">
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                       <SheetHeader>
@@ -125,12 +129,12 @@ function Discover() {
                                           setType(e as typeSchema);
                                         }}
                                         defaultValue={searchParams.get("type")}
-                                      >
+                                        >
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="cat"
                                             id="type"
-                                          />
+                                            />
                                           <Label htmlFor="cat">Cat</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
@@ -161,19 +165,19 @@ function Discover() {
                                         defaultValue={searchParams.get(
                                           "weight"
                                         )}
-                                      >
+                                        >
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="0-15"
                                             id="0-15"
-                                          />
+                                            />
                                           <Label htmlFor="0-15">0-15 kg</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="15-30"
                                             id="15-30"
-                                          />
+                                            />
                                           <Label htmlFor="15-30">
                                             15-30 kg
                                           </Label>
@@ -182,7 +186,7 @@ function Discover() {
                                           <RadioGroupItem
                                             value="30-45"
                                             id="30-45"
-                                          />
+                                            />
                                           <Label htmlFor="30-45">
                                             30-45 kg
                                           </Label>
@@ -191,7 +195,7 @@ function Discover() {
                                           <RadioGroupItem
                                             value="45+"
                                             id="45+"
-                                          />
+                                            />
                                           <Label htmlFor="45+">45+ kg</Label>
                                         </div>
                                       </RadioGroup>
@@ -217,12 +221,12 @@ function Discover() {
                                             defaultValue={searchParams.get(
                                               "breed"
                                             )}
-                                          >
+                                            >
                                             <div className="flex items-center space-x-2">
                                               <RadioGroupItem
                                                 value="ragdoll"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="ragdoll">
                                                 RagDoll
                                               </Label>
@@ -231,7 +235,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="maine-coon"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="maine-coon">
                                                 Maine Coon
                                               </Label>
@@ -240,7 +244,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="shorthair"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="shorthair">
                                                 ShortHair
                                               </Label>
@@ -249,7 +253,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="persian"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="persian">
                                                 Persian
                                               </Label>
@@ -267,7 +271,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="others"
                                                 id="others"
-                                              />
+                                                />
                                               <Label htmlFor="others">
                                                 Others
                                               </Label>
@@ -280,22 +284,22 @@ function Discover() {
                                 )}
                                 {type === "dog" && (
                                   <FormField
-                                    control={form.control}
-                                    name="breed"
-                                    render={({ field }) => {
-                                      return (
-                                        <FormItem>
+                                  control={form.control}
+                                  name="breed"
+                                  render={({ field }) => {
+                                    return (
+                                      <FormItem>
                                           <RadioGroup
                                             onValueChange={field.onChange}
                                             defaultValue={searchParams.get(
                                               "breed"
                                             )}
-                                          >
+                                            >
                                             <div className="flex items-center space-x-2">
                                               <RadioGroupItem
                                                 value="bulldog"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="bulldog">
                                                 BullDog
                                               </Label>
@@ -304,7 +308,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="labrador"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="labrador">
                                                 Labrador
                                               </Label>
@@ -313,7 +317,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="german-shepherd"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="german-shepherd">
                                                 German Shepherd
                                               </Label>
@@ -322,7 +326,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="rottweiler"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="rottweiler">
                                                 Rottweiler
                                               </Label>
@@ -331,7 +335,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="golden-retriever"
                                                 id="breed"
-                                              />
+                                                />
                                               <Label htmlFor="golden-retriever">
                                                 Golden Retriever
                                               </Label>
@@ -340,7 +344,7 @@ function Discover() {
                                               <RadioGroupItem
                                                 value="others"
                                                 id="others"
-                                              />
+                                                />
                                               <Label htmlFor="others">
                                                 Others
                                               </Label>
@@ -367,7 +371,7 @@ function Discover() {
                                       <RadioGroup
                                         onValueChange={field.onChange}
                                         defaultValue={searchParams.get("city")}
-                                      >
+                                        >
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="kolkata"
@@ -397,14 +401,14 @@ function Discover() {
                                           <RadioGroupItem
                                             value="noida"
                                             id="noida"
-                                          />
+                                            />
                                           <Label htmlFor="noida">Noida</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="others"
                                             id="others"
-                                          />
+                                            />
                                           <Label htmlFor="others">Others</Label>
                                         </div>
                                       </RadioGroup>
@@ -435,9 +439,9 @@ function Discover() {
                                                     .get("color")
                                                     ?.split("%2C")
                                                     .includes("black")}
-                                                  checked={field.value?.includes(
-                                                    "black"
-                                                  )}
+                                                    checked={field.value?.includes(
+                                                      "black"
+                                                    )}
                                                   onCheckedChange={(
                                                     checked
                                                   ) => {
@@ -459,7 +463,7 @@ function Discover() {
                                                             value !== "black"
                                                         )
                                                       );
-                                                  }}
+                                                    }}
                                                 />
                                               </FormControl>
                                               <FormLabel>black</FormLabel>
@@ -493,16 +497,16 @@ function Discover() {
                                                       ]);
                                                     }
                                                     return checked
-                                                      ? field.onChange([
-                                                        ...field.value,
-                                                        "gray",
-                                                      ])
-                                                      : field.onChange(
-                                                        field.value?.filter(
-                                                          (value) =>
-                                                            value !== "gray"
-                                                        )
-                                                      );
+                                                    ? field.onChange([
+                                                      ...field.value,
+                                                      "gray",
+                                                    ])
+                                                    : field.onChange(
+                                                      field.value?.filter(
+                                                        (value) =>
+                                                          value !== "gray"
+                                                      )
+                                                    );
                                                   }}
                                                 />
                                               </FormControl>
@@ -547,7 +551,7 @@ function Discover() {
                                                             value !== "brown"
                                                         )
                                                       );
-                                                  }}
+                                                    }}
                                                 />
                                               </FormControl>
                                               <FormLabel>brown</FormLabel>
@@ -567,10 +571,10 @@ function Discover() {
                                                     .get("color")
                                                     ?.split("%2C")
                                                     .includes("white")}
-                                                  checked={field.value?.includes(
-                                                    "white"
-                                                  )}
-                                                  onCheckedChange={(
+                                                    checked={field.value?.includes(
+                                                      "white"
+                                                    )}
+                                                    onCheckedChange={(
                                                     checked
                                                   ) => {
                                                     if (
@@ -591,7 +595,7 @@ function Discover() {
                                                             value !== "white"
                                                         )
                                                       );
-                                                  }}
+                                                    }}
                                                 />
                                               </FormControl>
                                               <FormLabel>White</FormLabel>
@@ -611,11 +615,11 @@ function Discover() {
                                                     .get("color")
                                                     ?.split("%2C")
                                                     .includes("others")}
-                                                  checked={field.value?.includes(
-                                                    "others"
-                                                  )}
-                                                  onCheckedChange={(
-                                                    checked
+                                                    checked={field.value?.includes(
+                                                      "others"
+                                                    )}
+                                                    onCheckedChange={(
+                                                      checked
                                                   ) => {
                                                     if (
                                                       field.value === undefined
@@ -635,7 +639,7 @@ function Discover() {
                                                             value !== "others"
                                                         )
                                                       );
-                                                  }}
+                                                    }}
                                                 />
                                               </FormControl>
                                               <FormLabel>Others</FormLabel>
@@ -660,19 +664,19 @@ function Discover() {
                                     <FormItem>
                                       <RadioGroup
                                         onValueChange={field.onChange}
-                                      >
+                                        >
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="male"
                                             id="male"
-                                          />
+                                            />
                                           <Label htmlFor="male">Male</Label>
                                         </div>
                                         <div className="flex items-center space-x-2">
                                           <RadioGroupItem
                                             value="female"
                                             id="female"
-                                          />
+                                            />
                                           <Label htmlFor="female">Female</Label>
                                         </div>
                                       </RadioGroup>
@@ -685,12 +689,15 @@ function Discover() {
                         </SheetDescription>
                       </SheetHeader>
                       <SheetFooter>
+                        <div className="flex flex-row gap-4">
+                          
                       <SheetTrigger>
                           <Button type="reset" onClick={handleClearFilters}>Clear Filters</Button>
                         </SheetTrigger>
                         <SheetTrigger>
                           <Button type="submit">Apply Filters</Button>
                         </SheetTrigger>
+                        </div>
                       </SheetFooter>
                     </form>
                   </Form>
@@ -722,6 +729,7 @@ function Discover() {
         </div>
       </div>
     </div>
+              </>
   );
 }
 

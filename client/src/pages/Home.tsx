@@ -5,12 +5,13 @@ import home2 from "../assets/home4.png";
 import home3 from "../assets/home5.png";
 import { useState } from "react";
 import { RiMenu2Fill, RiCloseFill } from "react-icons/ri";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import logout from "@/utils/logout";
 import { unsetUser } from "@/redux/user";
 import { Loader2 } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 function Home() {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false);
@@ -26,60 +27,15 @@ function Home() {
 
   return (
     <div className="home-container">
-      <header className="home-header">
-        <h1 className="logo">Cuddly.com</h1>
-        <div
-          className={`navbut ${toggleMenu && "open"}`}
-          onClick={() => setToggleMenu((prev) => !prev)}
-        >
-          {toggleMenu ? <RiCloseFill /> : <RiMenu2Fill />}
-        </div>
-        <ul className={`nav ${toggleMenu && "open"}`}>
-          <li className="nav-item">
-            <a href="/" className="nav-link">
-              Adopt a pet
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="/" className="nav-link">
-              Queries
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="/" className="nav-link">
-              About Us
-            </a>
-          </li>
-          <li className="nav-item">
-            <a href="/" className="nav-link">
-              Contact Us
-            </a>
-          </li>
-          <li className="nav-item">
-            <button
-              className="login-btn"
-              onClick={() =>
-                user.isLoading === false &&
-                (user.isAuth === true ? handleLogout() : navigate("/login"))
-              }
-            >
-              {user.isLoading === true ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : user.isAuth === true ? (
-                "Logout"
-              ) : (
-                "Login"
-              )}
-            </button>
-          </li>
-        </ul>
-      </header>
+      <Navbar />
       <div className="top-section-main">
         <div className="text-section">
           <h1 className="top-section-main-text">
             Meet new and interesting pets nearby.
           </h1>
+          <Link to="/discover">
           <button className="main-btn">Adopt Now!</button>
+          </Link>
         </div>
         <div className="section-image-container">
           <img src={main} alt="" className="top-section-image" />
@@ -91,7 +47,9 @@ function Home() {
           Join our community of pet lovers and find the perfect companion for
           your family.
         </p>
+        <Link to="/upload">
         <button className="rehome-btn">Rehome Now!</button>
+        </Link>
       </div>
       <div className="section-3">
         <h1 className="section-3-main-text md:text-4xl text-3xl">How it works?</h1>
@@ -127,7 +85,9 @@ function Home() {
         <p className="section-2-secondary-text text-base">
         Discover fascinating facts and expert advice about animals and pets with our interactive chat bot!
         </p>
+        <Link to="/chatwithai">
         <button className="rehome-btn">Chat Now!</button>
+        </Link>
       </div>
       <footer className="footer">
         <ul className="footer-list">
