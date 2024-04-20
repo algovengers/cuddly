@@ -270,4 +270,11 @@ function getPetsForEachColor(filters: any) {
   });
 }
 
-export { uploadPet, explorePets, getPet };
+const clearcache = asyncHandler(async (req: Request, res: Response) => {
+  redisClient.flushdb(() => {
+    console.log("Redis Flushed!");
+    res.status(200).json({ msg: "Redis Flushed" });
+  });
+});
+
+export { uploadPet, explorePets, getPet, clearcache };
