@@ -10,7 +10,7 @@ import { RootState } from "@/redux/store";
 import { setChat } from "@/redux/userChatSlice";
 
 function Profile() {
-    const [tab, setTab] = useState(1);
+    const [tab, setTab] = useState(2);
     const [showSidebar,setShowSidebar] = useState(false)
 
     const userData = useSelector((state: RootState) => state.user);
