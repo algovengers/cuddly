@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import PetCard from "../PetCard";
 import exampleImg from '../../assets/main.jpeg'
-import { Scale } from "lucide-react";
 
 export default function UserDetail({setShowSidebar,showSidebar}) {
     const userData = useSelector((state: RootState) => state.user);

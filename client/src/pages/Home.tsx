@@ -94,7 +94,7 @@ function Home() {
         <button className="rehome-btn">Rehome Now!</button>
       </div>
       <div className="section-3">
-        <h1 className="section-3-main-text">How it works?</h1>
+        <h1 className="section-3-main-text md:text-4xl text-3xl">How it works?</h1>
         <div className="steps-container">
           <div className="steps">
             <img src={home1} alt="img1" className="step-img" />
@@ -121,6 +121,13 @@ function Home() {
             </p>
           </div>
         </div>
+      </div>
+      <div className="section-2 bg-slate-200">
+        <h1 className="section-2-main-text">Know more about animals.</h1>
+        <p className="section-2-secondary-text text-base">
+        Discover fascinating facts and expert advice about animals and pets with our interactive chat bot!
+        </p>
+        <button className="rehome-btn">Chat Now!</button>
       </div>
       <footer className="footer">
         <ul className="footer-list">
