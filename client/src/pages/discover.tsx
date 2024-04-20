@@ -111,7 +111,7 @@ function Discover() {
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                       <SheetHeader>
                         <SheetTitle>Apply filters</SheetTitle>
-                        <SheetDescription className="">
+                        <SheetDescription className="text-left">
                           <div className="overflow-y-auto max-h-[82vh] mb-3">
                             <div className="py-4">
                               <h2 className="mb-4 font-semibold text-gray-600">

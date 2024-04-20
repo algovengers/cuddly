@@ -21,7 +21,9 @@ function Navbar() {
   return (
     <header className="home-header">
         <Link to='/'>
-    <h1 className="logo">Cuddly.com</h1>
+
+    <h1 className="logo">Cuddly</h1>
+
         </Link>
     <div
       className={`navbut ${toggleMenu && "open"}`}
