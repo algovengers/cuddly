@@ -5,24 +5,28 @@ import MessageItem from "./MessageItem";
 import { RootState } from "@/redux/store";
 import { adduserChatMessage, changeIndex } from "@/redux/userChatSlice";
 
-import { FormEvent, useEffect, useReducer, useRef } from "react";
+import { FormEvent, useEffect, useReducer, useRef, useState } from "react";
 
-
-export default function ChatBox({setShowSidebar,showSidebar}) {
+export default function ChatBox({ setShowSidebar, showSidebar }) {
     const userChatData = useSelector((state: RootState) => state.userChat);
     const userData = useSelector((state: RootState) => state.user);
-    const[showChatting,setShowChatting]= useState(false);
+    const [showChatting, setShowChatting] = useState(false);
 
     return (
         <div className="user-chats">
-            <div className='chat-list'>
+            <div className="chat-list">
                 <div className="chatlist-header">
-                <span className="material-symbols-outlined menu-btn" onClick={()=>setShowSidebar(!showSidebar)}>menu</span>
-                <h1 className="chatListHeading">Chats</h1>
+                    <span
+                        className="material-symbols-outlined menu-btn"
+                        onClick={() => setShowSidebar(!showSidebar)}
+                    >
+                        menu
+                    </span>
+                    <h1 className="chatListHeading">Chats</h1>
                 </div>
 
                 <ul className="chats">
-                    {userChatData?.chats?.map(({ id, users }, i) => { 
+                    {userChatData?.chats?.map(({ id, users }, i) => {
                         const data = users.find(
                             (data) => data.userId != userData.email
                         );
@@ -36,25 +40,25 @@ export default function ChatBox({setShowSidebar,showSidebar}) {
                                 setShowChatting={setShowChatting}
                             />
                             // We are not sending images...
-                        ); 
-                     })}
+                        );
+                    })}
                 </ul>
             </div>
-            {/* {userChatData.index != -1 && <ChatBoxContainer />} */}
-           {showChatting && <ChatBoxContainer setShowChatting={setShowChatting}/>}
-            
+            {showChatting && userChatData.index != -1 && (
+                <ChatBoxContainer setShowChatting={setShowChatting} />
+            )}
         </div>
     );
 }
 
-function SidechatViewer({ name, index,setShowChatting }) {
+function SidechatViewer({ name, index, setShowChatting }) {
     const dispatch = useDispatch();
     return (
         <li
             className="chat-item"
             onClick={() => {
                 dispatch(changeIndex({ index }));
-                setShowChatting(true)
+                setShowChatting(true);
             }}
             // onClick={()=>}
         >
@@ -68,17 +72,16 @@ function SidechatViewer({ name, index,setShowChatting }) {
     );
 }
 
-function ChatBoxContainer({setShowChatting}) {
-    // const dispatch = useDispatch();
-    // const userChatData = useSelector(
-    //     (state: RootState) => state.userChat.chats[state.userChat.index]
-    // );
-
-
-    const userData = useSelector((state: RootState) => state.user);
-    const otherUserId = userChatData.users.find(
-        (data) => data.userId != userData.email
+function ChatBoxContainer({ setShowChatting }) {
+    const dispatch = useDispatch();
+    const userChatData = useSelector(
+        (state: RootState) => state.userChat.chats[state.userChat.index]
     );
+
+    // const userData = useSelector((state: RootState) => state.user);
+    // const otherUserId = userChatData.users.find(
+    //     (data) => data.userId != userData.email
+    // );
     const chatBoxRef = useRef(null);
 
     function scrollToBottom(elementRef: React.RefObject<HTMLDivElement>) {
@@ -91,22 +94,26 @@ function ChatBoxContainer({setShowChatting}) {
         scrollToBottom(chatBoxRef);
     }, [userChatData]);
 
-
-    // function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
-    //     e.preventDefault();
-    //     const inputBox = (e.target as HTMLElement).querySelector(
-    //         'input[type="text"]'
-    //     ) as HTMLInputElement;
-    //     dispatch({ type: "userChat/sendMessage", payload: inputBox.value });
-    //     inputBox.value = "";
-    // }
+    function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const inputBox = (e.target as HTMLElement).querySelector(
+            'input[type="text"]'
+        ) as HTMLInputElement;
+        dispatch({ type: "userChat/sendMessage", payload: inputBox.value });
+        inputBox.value = "";
+    }
 
     return (
         <>
             <div className="chat-box-container">
                 <div className="chat-box">
                     <header className="chat-header">
-                                    <span className="material-symbols-outlined close-menu-btn" onClick={()=>setShowChatting(false)}>keyboard_backspace</span>
+                        <span
+                            className="material-symbols-outlined close-menu-btn"
+                            onClick={() => setShowChatting(false)}
+                        >
+                            keyboard_backspace
+                        </span>
                         <div className="chat-pic-container">
                             <img
                                 src={profilePic}
@@ -154,7 +161,7 @@ function ChatBoxContainer({setShowChatting}) {
                 </div>
                 <form
                     className="sendMessageContainer"
-                    // onSubmit={handleInputChatSubmit}
+                    onSubmit={handleInputChatSubmit}
                 >
                     <div className="message-input-group">
                         <input type="text" className="messageInput" />
