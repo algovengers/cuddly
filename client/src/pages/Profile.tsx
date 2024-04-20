@@ -11,6 +11,8 @@ import { setChat } from "@/redux/userChatSlice";
 
 function Profile() {
     const [tab, setTab] = useState(1);
+    const [showSidebar,setShowSidebar] = useState(false)
+
     const userData = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
 
@@ -27,7 +29,8 @@ function Profile() {
     }, [userData.email]);
     return (
         <div className="profile-container">
-            <div className="sidebar">
+            <div className={`sidebar ${showSidebar ? "show-sidebar":""}`}>
+            <span className="material-symbols-outlined close-menu-btn sidebar-back-btn" onClick={()=>setShowSidebar(!showSidebar)}>keyboard_backspace</span>
                 <div className="user-header">
                     <div className="profile-pic-container">
                         <img
@@ -38,12 +41,15 @@ function Profile() {
                     </div>
                     <span className="user-name">{userData.name}</span>
                 </div>
+                    
                 <ul className="side-nav">
                     <li
                         className={`side-nav-items ${
                             tab === 1 ? "active-side-nav" : ""
                         }`}
-                        onClick={() => setTab(1)}
+                        onClick={() => {setTab(1);
+                            setShowSidebar(!showSidebar);
+                        }}
                     >
                         My Account
                     </li>
@@ -51,30 +57,18 @@ function Profile() {
                         className={`side-nav-items ${
                             tab === 2 ? "active-side-nav" : ""
                         }`}
-                        onClick={() => setTab(2)}
+                        onClick={() => {setTab(2);
+                            setShowSidebar(!showSidebar);
+                        }}
                     >
                         Chats
-                    </li>
-                    <li
-                        className={`side-nav-items ${
-                            tab === 3 ? "active-side-nav" : ""
-                        }`}
-                    >
-                        Rehome Status
-                    </li>
-                    <li
-                        className={`side-nav-items ${
-                            tab === 4 ? "active-side-nav" : ""
-                        }`}
-                    >
-                        Adoption Status
                     </li>
                 </ul>
             </div>
             <div className="main-box">
-                {tab === 1 && <UserDetail />}
+                {tab === 1 && <UserDetail setShowSidebar={setShowSidebar} showSidebar={showSidebar} />}
 
-                {tab === 2 && <ChatBox />}
+                {tab === 2 && <ChatBox setShowSidebar={setShowSidebar} showSidebar={showSidebar} />}
             </div>
         </div>
     );

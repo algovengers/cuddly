@@ -27,6 +27,7 @@ function PetData() {
     if (loading) {
         return <Loading />;
     }
+
     return (
         <div
             className=" flex justify-center bg-slate-50 min-h-screen
@@ -104,6 +105,7 @@ function PetData() {
                         </div>
                         <div className=" col-span-1">
                             <PetPageCard owner={data.owner} name={data.name} />
+
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ const prompt = `
     from the given image.
     Detect the image of the pet and tell it's feature in the given json format
     The breed feature has two enum one for cat and one for dogs choose accordingly you select the type
+    Don't give any answer out of enum, if the none of the answers match enum return null simply for that key
     {
         type : enum(["dog","cat"]),
         breed : enum(["labrador","bulldog","german-shepherd","rottweiler","golden-retriever","others"]) | enum(["ragdoll","maine-coon","shorthair","persian","siberian","others"]),
@@ -45,7 +46,19 @@ const detectImage = asyncHandler(async (req: Request, res: Response) => {
     const response = result.response;
     const text = JSON.parse(response.text());
     console.log(text);
-    res.status(200).json(new ApiResponse(200, { text }));
-});
+
+    if(!["labrador","bulldog","german-shepherd","rottweiler","golden-retriever","others","ragdoll","maine-coon","shorthair","persian","siberian"].includes(text.breed)){
+      text.breed = "others"
+    }
+    if(!["cat","dog"].includes(text.type)){
+      text.type = null
+      text.breed = null
+    }
+    if(!["brown","white","gray","black","others"].includes(text.color)){
+      text.color = "others" 
+    }
+    res.status(200).json(new ApiResponse(200,{text}))
+})
+
 
 export { detectImage };

@@ -1,49 +1,62 @@
 import { useDispatch, useSelector } from "react-redux";
 import profilePic from "../../assets/home4.png";
 import sampleImg from "../../assets/main.jpeg";
-import FileMessageItem from "./FileMessageItem";
 import MessageItem from "./MessageItem";
 import { RootState } from "@/redux/store";
 import { adduserChatMessage, changeIndex } from "@/redux/userChatSlice";
+
 import { FormEvent, useEffect, useReducer, useRef } from "react";
 
-export default function ChatBox() {
+
+export default function ChatBox({setShowSidebar,showSidebar}) {
     const userChatData = useSelector((state: RootState) => state.userChat);
     const userData = useSelector((state: RootState) => state.user);
+    const[showChatting,setShowChatting]= useState(false);
 
     return (
         <div className="user-chats">
-            <div className="chat-list">
+            <div className='chat-list'>
+                <div className="chatlist-header">
+                <span className="material-symbols-outlined menu-btn" onClick={()=>setShowSidebar(!showSidebar)}>menu</span>
                 <h1 className="chatListHeading">Chats</h1>
+                </div>
+
                 <ul className="chats">
-                    {userChatData?.chats?.map(({ id, users }, i) => {
+                    {userChatData?.chats?.map(({ id, users }, i) => { 
                         const data = users.find(
                             (data) => data.userId != userData.email
                         );
 
                         return (
                             <SidechatViewer
-                                name={data.name}
+                                name={data.name || "AFTAB"}
+                                // name={"AFTAB"}
                                 key={id}
                                 index={i}
+                                setShowChatting={setShowChatting}
                             />
-                        );
-                    })}
+                            // We are not sending images...
+                        ); 
+                     })}
                 </ul>
             </div>
-            {userChatData.index != -1 && <ChatBoxContainer />}
+            {/* {userChatData.index != -1 && <ChatBoxContainer />} */}
+           {showChatting && <ChatBoxContainer setShowChatting={setShowChatting}/>}
+            
         </div>
     );
 }
 
-function SidechatViewer({ name, index }) {
+function SidechatViewer({ name, index,setShowChatting }) {
     const dispatch = useDispatch();
     return (
         <li
             className="chat-item"
             onClick={() => {
                 dispatch(changeIndex({ index }));
+                setShowChatting(true)
             }}
+            // onClick={()=>}
         >
             <div className="chat-pic-container">
                 <img src={profilePic} alt="/chat-pic" className="chat-pic" />
@@ -55,11 +68,12 @@ function SidechatViewer({ name, index }) {
     );
 }
 
-function ChatBoxContainer() {
-    const dispatch = useDispatch();
-    const userChatData = useSelector(
-        (state: RootState) => state.userChat.chats[state.userChat.index]
-    );
+function ChatBoxContainer({setShowChatting}) {
+    // const dispatch = useDispatch();
+    // const userChatData = useSelector(
+    //     (state: RootState) => state.userChat.chats[state.userChat.index]
+    // );
+
 
     const userData = useSelector((state: RootState) => state.user);
     const otherUserId = userChatData.users.find(
@@ -77,20 +91,22 @@ function ChatBoxContainer() {
         scrollToBottom(chatBoxRef);
     }, [userChatData]);
 
-    function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        const inputBox = (e.target as HTMLElement).querySelector(
-            'input[type="text"]'
-        ) as HTMLInputElement;
-        dispatch({ type: "userChat/sendMessage", payload: inputBox.value });
-        inputBox.value = "";
-    }
+
+    // function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
+    //     e.preventDefault();
+    //     const inputBox = (e.target as HTMLElement).querySelector(
+    //         'input[type="text"]'
+    //     ) as HTMLInputElement;
+    //     dispatch({ type: "userChat/sendMessage", payload: inputBox.value });
+    //     inputBox.value = "";
+    // }
 
     return (
         <>
             <div className="chat-box-container">
                 <div className="chat-box">
                     <header className="chat-header">
+                                    <span className="material-symbols-outlined close-menu-btn" onClick={()=>setShowChatting(false)}>keyboard_backspace</span>
                         <div className="chat-pic-container">
                             <img
                                 src={profilePic}
@@ -112,6 +128,7 @@ function ChatBoxContainer() {
                             </button>
                         </div>
                     </header>
+
                     <ul className="message-list" ref={chatBoxRef}>
                         {/* <MessageItem isMyMessage={true}>
                             Hi,How are you?
@@ -137,21 +154,10 @@ function ChatBoxContainer() {
                 </div>
                 <form
                     className="sendMessageContainer"
-                    onSubmit={handleInputChatSubmit}
+                    // onSubmit={handleInputChatSubmit}
                 >
                     <div className="message-input-group">
                         <input type="text" className="messageInput" />
-                        <label htmlFor="file" className="file-input-label">
-                            <span className="material-symbols-outlined ">
-                                attach_file
-                            </span>
-                        </label>
-                        <input
-                            type="file"
-                            name="file"
-                            id="file"
-                            className="imageInput"
-                        />
                     </div>
                     <button type="submit" className="send-button">
                         <span className="material-symbols-outlined">send</span>

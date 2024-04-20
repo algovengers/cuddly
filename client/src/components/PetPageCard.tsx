@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
+
 function PetPageCard({ owner, name }) {
     const userData = useSelector((data: RootState) => data.user);
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ function PetPageCard({ owner, name }) {
                     </Button>
                 </div>
             )}
+
         </div>
     );
 }
