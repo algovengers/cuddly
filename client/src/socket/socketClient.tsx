@@ -24,7 +24,7 @@ export default class SocketClient {
         }
     }
 
-    on(eventName: string, func: () => void) {
+    on(eventName: string, func: (data?: any) => void) {
         if (this.socket) {
             this.socket.on(eventName, func);
         }
