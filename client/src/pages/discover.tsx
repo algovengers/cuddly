@@ -51,25 +51,6 @@ type Filters = z.infer<typeof filter_schema>;
 
 type typeSchema = "cat" | "dog";
 
-function DropdownMenuRadioGroupDemo() {
-  const [position, setPosition] = React.useState("bottom");
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Sort By</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-          <DropdownMenuRadioItem value="top">Latest</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="bottom">Dummy</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="right">Right</DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 function Discover() {
   const [data, setData] = useState<Array<any>>();
