@@ -25,7 +25,7 @@ export default function UserDetail({setShowSidebar,showSidebar}) {
                     <span className="detail-title md:text-lg text-sm">Email:</span>
                     <span className="detail-value md:text-lg text-sm">{userData.email}</span>
                 </li>
-                {/* <li className="user-detail-element"><span className="detail-title">Username:</span><span className='detail-value'>newuserofcuddly</span></li> */}
+                <li className="user-detail-element"><span className="detail-title">Username:</span><span className='detail-value'>newuserofcuddly</span></li>
             </ul>
             <div className="adopted-pet-list-container flex flex-col gap-6">
             <h1 className="userDetailsTitle font-normal">Adopted Pets</h1>

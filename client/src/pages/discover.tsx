@@ -104,6 +104,9 @@ function Discover() {
   // useEffect(()=>{
   //   const res =
   // },[searchParams])
+  const handleClearFilters =()=>{
+    setSearchParams({})
+  }
   return (
     <div className="flex h-full w-full justify-center">
       <div className="max-w-7xl w-full p-4">
@@ -701,8 +704,11 @@ function Discover() {
                         </SheetDescription>
                       </SheetHeader>
                       <SheetFooter>
+                      <SheetTrigger>
+                          <Button type="reset" onClick={handleClearFilters}>Clear Filters</Button>
+                        </SheetTrigger>
                         <SheetTrigger>
-                          <Button>Apply Filters</Button>
+                          <Button type="submit">Apply Filters</Button>
                         </SheetTrigger>
                       </SheetFooter>
                     </form>
