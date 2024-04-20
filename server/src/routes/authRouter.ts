@@ -9,5 +9,5 @@ const authRouter = Router();
 authRouter.route("/upload-a-pet").post(upload.single("Image"), uploadPet);
 authRouter.route("/isAuthenticated").get(isAuthenticated);
 authRouter.route("/logout").post(logoutUser);
-authRouter.route('/detect').post(upload.single("Image"),detectImage)
+authRouter.route("/detect").post(upload.single("Image"), detectImage);
 export default authRouter;

@@ -4,7 +4,9 @@ import sampleImg from "../../assets/main.jpeg";
 import MessageItem from "./MessageItem";
 import { RootState } from "@/redux/store";
 import { adduserChatMessage, changeIndex } from "@/redux/userChatSlice";
-import { FormEvent, useState } from "react";
+
+import { FormEvent, useEffect, useReducer, useRef } from "react";
+
 
 export default function ChatBox({setShowSidebar,showSidebar}) {
     const userChatData = useSelector((state: RootState) => state.userChat);
@@ -72,10 +74,23 @@ function ChatBoxContainer({setShowChatting}) {
     //     (state: RootState) => state.userChat.chats[state.userChat.index]
     // );
 
-    // const userData = useSelector((state: RootState) => state.user);
-    // const otherUserId = userChatData.users.find(
-    //     (data) => data.userId != userData.email
-    // );
+
+    const userData = useSelector((state: RootState) => state.user);
+    const otherUserId = userChatData.users.find(
+        (data) => data.userId != userData.email
+    );
+    const chatBoxRef = useRef(null);
+
+    function scrollToBottom(elementRef: React.RefObject<HTMLDivElement>) {
+        if (elementRef.current) {
+            elementRef.current.scrollTop = elementRef.current.scrollHeight;
+        }
+    }
+
+    useEffect(() => {
+        scrollToBottom(chatBoxRef);
+    }, [userChatData]);
+
 
     // function handleInputChatSubmit(e: FormEvent<HTMLFormElement>) {
     //     e.preventDefault();
@@ -113,15 +128,14 @@ function ChatBoxContainer({setShowChatting}) {
                             </button>
                         </div>
                     </header>
-                    <ul className="message-list">
-                        <MessageItem isMyMessage={true}>
+
+                    <ul className="message-list" ref={chatBoxRef}>
+                        {/* <MessageItem isMyMessage={true}>
                             Hi,How are you?
                         </MessageItem>
-                        <MessageItem >
-                            I'm good.How may i help you?
-                        </MessageItem>
-
-{/*                         
+                        <FileMessageItem src={sampleImg} />
+                    <FileMessageItem isMyMessage={true} src={sampleImg} /> */}
+                        {/* 
                             {userChatData.index != -1 &&
                                 userChatData.chats[
                                     userChatData.index
@@ -129,13 +143,13 @@ function ChatBoxContainer({setShowChatting}) {
                                     console.log(message);
                                     return "hi";
                                 })} */}
-                        {/* {userChatData.messages.map((m) => {
+                        {userChatData.messages.map((m) => {
                             return (
                                 <MessageItem isMyMessage={m.own} key={m.id}>
                                     {m.message}
                                 </MessageItem>
                             );
-                        })} */}
+                        })}
                     </ul>
                 </div>
                 <form
