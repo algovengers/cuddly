@@ -717,7 +717,7 @@ function Discover() {
               </Sheet>
             </div>
             <div>
-              <DropdownMenuRadioGroupDemo />
+              {/* <DropdownMenuRadioGroupDemo /> */}
             </div>
           </div>
           <div className="mt-8 flex flex-wrap gap-6 align-middle justify-center">
