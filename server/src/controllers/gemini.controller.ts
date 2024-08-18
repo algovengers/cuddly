@@ -20,6 +20,7 @@ const prompt = `
         breed : enum(["labrador","bulldog","german-shepherd","rottweiler","golden-retriever","others"]) | enum(["ragdoll","maine-coon","shorthair","persian","siberian","others"]),
         color : enum(["brown","white","gray","black","others"]),
     }
+    Give the answer in the stringified format of the json, don't add any other things
     Try to find the answer of everything precisely and always as much as possible
     In worst case if you dont know the answer of any field return that field as null
     `;
@@ -44,6 +45,7 @@ const detectImage = asyncHandler(async (req: Request, res: Response) => {
     fs.unlinkSync(imagePath);
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = result.response;
+    console.log(response.text())
     const text = JSON.parse(response.text());
     console.log(text);
 
