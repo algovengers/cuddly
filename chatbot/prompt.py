@@ -62,15 +62,11 @@ def process_content(retriever_op: list[Document]):
 
 
 def query_data(query):
-    start_time = time.time()
     retriever_op = retriever.invoke(query)
-    print("Time taken by pinecone to fetch simlar results",time.time() - start_time)
-    start_time = time.time()
     if len(retriever_op) == 0:
         return ""
     context = process_content(retriever_op=retriever_op)
     response  = llm.invoke(input=generate_prompt(query,context))
-    print("Time taken by gemini to generate response",time.time() - start_time)
 
     return response.content
 
