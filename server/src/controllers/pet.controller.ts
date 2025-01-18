@@ -64,7 +64,6 @@ const uploadPet = asyncHandler(async (req: Request, res: Response) => {
 type Animal = "dog" | "cat";
 
 const explorePets = asyncHandler(async (req: Request, res: Response) => {
-  // console.log("explore:", req.query);
   let query = req.query as Record<string, string>;
   for (let q in query) {
     if (query[q].length === 0) {
@@ -78,24 +77,20 @@ const explorePets = asyncHandler(async (req: Request, res: Response) => {
   let color = query["color"]?.split("%2C");
 
   try {
-    // console.log("kk");
     const isCached = await getIsCached();
-    // console.log("isCached", isCached);
 
     if (isCached) {
-      // console.log(isCached);
       const data: any = await getPetsRedis({
         weight: query["weight"],
-        age: query["age"], // need to talk to afeef or rohit !rem
+        age: query["age"], 
         breed: query["breed"],
         city: query["city"],
-        color: color, // need to talk to afeef or rohit !rem
+        color: color, 
         gender: query["gender"],
         personality: query["personality"],
-        type: query["type"], // need to talk to afeef or rohit !rem
+        type: query["type"], 
       });
 
-      // console.log(data);
       const jsonData = data.map((each: string) => JSON.parse(each));
       console.log("data from redis");
 
@@ -104,7 +99,6 @@ const explorePets = asyncHandler(async (req: Request, res: Response) => {
       throw new Error("no cache found!");
     }
   } catch (err: any) {
-    // console.log("errrrr", err);
     console.log("fallback in err");
     const data = await prisma.pet.findMany({
       where: {
@@ -121,7 +115,6 @@ const explorePets = asyncHandler(async (req: Request, res: Response) => {
       },
     });
 
-    // console.log(data);
     res.status(200).json(new ApiResponse(200, data));
 
     await storeAllPetsRedis(data);
@@ -159,7 +152,6 @@ async function storePetRedis(filteredPet: any) {
 function getIsCached() {
   return new Promise((resolve: any, reject: any) => {
     redisClient.get("cuddly_v1_cached", (err: any, results: any) => {
-      // console.log("res", results);
       if (err) {
         reject(err);
         return null;
@@ -208,7 +200,6 @@ function storeAllPetsRedis(data: any) {
 }
 
 function getPetsRedis(filters: any) {
-  // console.log("filters", filters);
   return new Promise(async (resolve: any, reject: any) => {
     try {
       let allValues: Array<any> = [];
@@ -223,7 +214,6 @@ function getPetsRedis(filters: any) {
           await getPetsForEachColor({ ...filters, color: "*" })
         );
       }
-      // console.log("aalval", allValues);
       resolve(allValues);
     } catch (err) {
       reject(err);

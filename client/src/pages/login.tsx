@@ -112,7 +112,7 @@ function LoginPage() {
     }
 
     return (
-        <div className="min-h-[100vh] flex flex-col justify-center bg-[#ffebc4] bg-[linear-gradient(180deg,#ffebc4,#fd9)]">
+        <div className="min-h-[100vh] flex flex-col justify-center bg-[linear-gradient(180deg,#53b3cb,#5eb8ce)]">
             <Card className=" sm:w-[400px] sm:mx-auto mx-3 my-3 shadow-2xl border-[#00000055]">
                 <CardHeader>
                     <CardTitle className="text-3xl font-bold">Login</CardTitle>

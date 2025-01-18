@@ -43,18 +43,18 @@ const dummyChat: ChatMsg[] = [
   },
 ];
 
-function Chat({ text, own, isLoading = false }: ChatMessage) {
+export function Chat({ text, own, isLoading = false }: ChatMessage) {
   return (
     <div
-      className={`${""} ${own && "pt-[20px] pb-[10px]"} ${
-        !own && "border-b-[1px] border-zinc-400 pt-[10px] pb-[20px]"
+      className={`${""} ${own && "pt-[20px] pb-[10px] "} ${
+        !own && " border-zinc-400 pt-[10px] pb-[20px]"
       }`}
     >
       <div
-        className={`${""} ${
+        className={`${"shadow-[0_0_5px_3px_rgba(0,0,0,0.05),0_0_1px_1px_rgba(0,0,0,0.07)]"} ${
           own &&
-          "p-[10px] bg-white rounded-lg w-fit shadow-[0_0_5px_3px_rgba(0,0,0,0.05),0_0_1px_1px_rgba(0,0,0,0.07)]"
-        }`}
+          "p-[10px] bg-primary rounded-lg rounded-br-none w-fit ml-auto"
+        } ${!own && "bg-white p-[10px] text-neutral-800 rounded-lg rounded-tl-none w-fit"}`}
       >
         <Markdown>{text}</Markdown>
       </div>

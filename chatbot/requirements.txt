@@ -1,12 +1,11 @@
+orjson==3.10.6
 langchain
 langchain_community
 langchain-google-genai
-pymongo
 pypdf
 bs4
 requests
 python-dotenv
-langchain-mongodb
 Flask
 flask-cors
 Gunicorn

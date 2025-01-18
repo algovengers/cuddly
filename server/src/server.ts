@@ -61,7 +61,7 @@ const startServer = async () => {
     server.listen(port, () => {
       console.log(`Cuddly-server is listening on port ${port} ...`);
       client.connect().then(() => {
-        console.log("mongodb connected for the langchain");
+        console.log("mongodb connected");
       });
     });
   } catch (err) {

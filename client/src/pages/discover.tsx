@@ -10,15 +10,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import PetCard from "@/components/PetCard";
 import axios from "axios";

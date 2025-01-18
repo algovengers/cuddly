@@ -27,6 +27,10 @@ module.exports = {
           to: { height: "0" },
         },
       },
+      colors: {
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+      },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
