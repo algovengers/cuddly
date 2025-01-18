@@ -4,15 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 from pymongo import MongoClient
 from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
-from langchain_mongodb import MongoDBAtlasVectorSearch
 from langchain_google_genai import GoogleGenerativeAI,ChatGoogleGenerativeAI
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-from langchain_community.llms.huggingface_hub import HuggingFaceHub
 # from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from flask import Flask, jsonify,request,make_response
 from flask_cors import CORS, cross_origin
-from pinecone import Pinecone, ServerlessSpec
+from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.documents import Document
 

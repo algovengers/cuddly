@@ -4,7 +4,6 @@ import { asyncHandler } from "../utils/asyncHandler";
 import fs from "fs";
 import ApiResponse from "../utils/ApiResponse";
 
-console.log(String(process.env.GEMINI_API_KEY));
 const genAI = new GoogleGenerativeAI(String(process.env.GEMINI_API_KEY));
 
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });

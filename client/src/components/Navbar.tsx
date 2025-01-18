@@ -22,7 +22,7 @@ function Navbar() {
     <header className="home-header">
         <Link to='/'>
 
-    <h1 className="logo">Cuddly</h1>
+    <h1 className="logo font-bold text-xl">Cuddly</h1>
 
         </Link>
     <div

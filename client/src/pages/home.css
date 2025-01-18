@@ -119,7 +119,6 @@ button {
 }
 
 .section-2 {
-  height: 315px;
   width: 100%;
   display: flex;
   flex-direction: column;

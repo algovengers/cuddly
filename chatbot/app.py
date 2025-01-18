@@ -5,10 +5,8 @@ from pymongo import MongoClient
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.document_loaders import DirectoryLoader,PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_mongodb import MongoDBAtlasVectorSearch
 from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
-from langchain_core.documents import Document
 
 
 loader = DirectoryLoader('./files',glob='./*.pdf',loader_cls=PyPDFLoader)
