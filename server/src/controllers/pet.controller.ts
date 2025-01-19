@@ -21,7 +21,6 @@ const pet_schema = z.object({
 });
 
 const uploadPet = asyncHandler(async (req: Request, res: Response) => {
-  console.log("here");
   const pet = req.body;
   const filteredPet = pet_schema.parse(pet);
   const userId = req.user?.id!;
@@ -99,7 +98,6 @@ const explorePets = asyncHandler(async (req: Request, res: Response) => {
       throw new Error("no cache found!");
     }
   } catch (err: any) {
-    console.log("fallback in err");
     const data = await prisma.pet.findMany({
       where: {
         weight: query["weight"],

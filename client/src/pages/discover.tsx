@@ -74,9 +74,6 @@ function Discover() {
     if (e["color"]) e["color"] = encodeURIComponent(e["color"].join(","));
     setSearchParams(e);
   };
-  // useEffect(()=>{
-  //   const res =
-  // },[searchParams])
   const handleClearFilters =()=>{
     setSearchParams({})
   }
