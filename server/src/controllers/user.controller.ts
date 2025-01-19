@@ -115,7 +115,6 @@ const googleSingup = asyncHandler(async (req: Request, res: Response) => {
   const emailId = data.email;
   const name = data.displayName;
   const photo = data.photoURL;
-  console.log(uid, emailId, name, photo);
   const userExists = await prisma.user.findFirst({ where: { emailId } });
   if (userExists) {
     //return the token like others
@@ -220,4 +219,25 @@ const isAuthenticated = (req: Request, res: Response) => {
   );
 };
 
-export { registerUser, loginUser, logoutUser, googleSingup, isAuthenticated };
+const petListing = asyncHandler(async (req: Request, res: Response) => {
+  const data = await prisma.pet.findMany({
+    where: {
+      owner: {
+        id: req.user?.id,
+      },
+    },
+    select: {
+      id: true,
+      breed: true,
+      Image: true,
+      city: true,
+      name: true,
+      personality: true,
+    }
+  });
+  return res.status(200).json({
+    data,
+  });
+});
+
+export { registerUser, loginUser, logoutUser, googleSingup, isAuthenticated, petListing };

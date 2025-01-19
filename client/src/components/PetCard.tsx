@@ -19,14 +19,14 @@ function PetCard({
       </div>
       <div className="mt-3 mx-3">
         <div className=" text-lg mb-2 flex flex-row justify-between items-center ">
-          <div className="font-medium">{name.toUpperCase() ||"Tom"}</div>
+          <div className="font-medium">{name?.toUpperCase() ||"Tom"}</div>
         </div>
         <div className="flex flex-row gap-2 mb-2 text-xs">
-          <div>{gender.toUpperCase() || "Male"}</div>
+          <div>{gender?.toUpperCase() || "Male"}</div>
           <div>•</div>
-          <div>{breed.toLocaleUpperCase() || "Healthy"}</div>
+          <div>{breed?.toLocaleUpperCase() || "Healthy"}</div>
         </div>
-        <div className="absolute bottom-2 flex items-center gap-2 text-sm"><span className="material-symbols-outlined text-base">location_on</span>{location.toUpperCase()}</div>
+        <div className="absolute bottom-2 flex items-center gap-2 text-sm"><span className="material-symbols-outlined text-base">location_on</span>{location?.toUpperCase()}</div>
       </div>
     </div>
   );
