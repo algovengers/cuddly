@@ -1,6 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-// Define your chat state here
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any[] = [];
 // Initialize your chat state here
@@ -16,7 +14,6 @@ const chatSlice = createSlice({
       state.push(action.payload);
     },
     addAichat(state, action) {
-      const { message } = action.payload;
       const lastMessage = state[state.length - 1];
       if (lastMessage.own == true) {
         state.push(action.payload);

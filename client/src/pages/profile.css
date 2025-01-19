@@ -3,8 +3,8 @@
 }
 
 .profile-container {
-    height: 100vh;
     margin-inline: auto;
+    height: 100%;
     width: 100vw;
     background-color: rgb(22, 22, 22);
     display: flex;
