@@ -5,7 +5,9 @@
 
 :root {
   --primary: #53b3cb;
-  --secondary: #1e2d2f
+  --secondary: #1e2d2f;
+  --muted-foreground: #71717a;
+  --primary-foreground: #000000;
 }
 
 * {

@@ -30,6 +30,8 @@ module.exports = {
       colors: {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
+        "muted-foreground": "var(--muted-foreground)",
+        "primary-foreground": "var(--primary-foreground)",
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

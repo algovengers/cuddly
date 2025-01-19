@@ -1,8 +1,14 @@
 import { FiArrowRight } from "react-icons/fi";
 import { Button } from "./ui/button";
 import { Chat } from "@/pages/ChatWithAi";
+import useAiChat from "@/hooks/useAiChat";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ChatComponent() {
+  const { addMessage } = useAiChat();
+  const [message, setMessage] = useState("");
+  const navigate = useNavigate();
   return (
     <div className="rounded-lg relative w-full">
       <div className="p-4 bg-secondary rounded-t-lg flex gap-4">
@@ -21,18 +27,25 @@ export default function ChatComponent() {
         <Chat own={false} text="How can I help you with your pet today?" />
 
         <div className=" p-[6px] w-full bg-white shadow-[0_0_5px_3px_rgba(0,0,0,0.1),0_0_1px_1px_rgba(0,0,0,0.1)] rounded-lg">
-          <form className="flex gap-[6px]">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate("/chatwithai");
+              addMessage(message, () => {
+                setMessage("");
+              });
+            }}
+            className="flex gap-[6px]"
+          >
             <input
               type="text"
               className=" appearance-none border-none outline-none w-full bg-transparent mx-[6px]"
               placeholder="Describe your problem ..."
-              //   value={message}
-              //   onChange={(e) => setMessage(e.target.value)}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
-            {/* <ImageChatPopup chatState={chatState} setChatState={setChatState} /> */}
             <Button
               type="submit"
-              //   disabled={chatState === "busy" ? true : false}
             >
               <FiArrowRight />
             </Button>
